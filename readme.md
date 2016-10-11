@@ -15,11 +15,11 @@ The best way to install this library is using [Composer](http://getcomposer.org/
 ## Simple usage
 
 ```php
-$client = new HelePartnerSyncApi\Application('id-assigned-to-you');
-$client->onCheckSlots(function (DateTime $date) {
+$client = new \HelePartnerSyncApi\Application('id-assigned-to-you');
+$client->onCheckSlots(function (\DateTime $date) {
     // $this->reservationFacade->getFreeSlots($date);
 });
-$client->onCreateReservation(function (DateTime $startDateTime, DateTime $endDateTime, $quantity, array $parameters) {
+$client->onCreateReservation(function (\DateTime $startDateTime, \DateTime $endDateTime, $quantity, array $parameters) {
     // $this->reservationFacade->createReservation(...);
 });
 $client->run();
