@@ -26,22 +26,11 @@ class Client
 	public function __construct($partnerId)
 	{
 		$this->partnerId = $partnerId;
-		$this->registerMethod(new CheckSlots());
-		$this->registerMethod(new CreateReservation());
 	}
 
 	public function registerMethod(Method $method)
 	{
 		$this->methods[$method->getName()] = $method;
-	}
-
-	/**
-	 * @param string $method
-	 * @param Closure $callback
-	 */
-	public function registerCallback($method, Closure $callback)
-	{
-		$this->getMethod($method)->setCallback($callback);
 	}
 
 	/**

@@ -4,6 +4,8 @@ namespace HelePartnerSyncApi;
 
 use Closure;
 use Exception;
+use HelePartnerSyncApi\Methods\CheckSlots;
+use HelePartnerSyncApi\Methods\CreateReservation;
 use Throwable;
 
 class Application
@@ -37,7 +39,7 @@ class Application
 	 */
 	public function onCheckSlots(Closure $callback)
 	{
-		$this->client->registerCallback('onCheckSlots', $callback);
+		$this->client->registerMethod(new CheckSlots($callback));
 	}
 
 	/**
@@ -45,7 +47,7 @@ class Application
 	 */
 	public function onCreateReservation(Closure $callback)
 	{
-		$this->client->registerCallback('onCreateReservation', $callback);
+		$this->client->registerMethod(new CreateReservation($callback));
 	}
 
 	public function run()

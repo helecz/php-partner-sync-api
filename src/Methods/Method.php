@@ -15,7 +15,7 @@ abstract class Method
 	/**
 	 * @param Closure $callback
 	 */
-	public function setCallback(Closure $callback)
+	public function __construct(Closure $callback)
 	{
 		$this->callback = $callback;
 	}
