@@ -5,19 +5,20 @@
 	"authors": [
 		{
 			"name": "Slevomat.cz, s.r.o.",
-			"homepage": "http://www.slevomat.cz"
+			"homepage": "http://www.hele.cz"
 		}
 	],
 	"require": {
 		"php": "^5.3|^7.0"
 	},
 	"require-dev": {
-		"consistence/coding-standard": "^0.8",
+		"php": "^7.0",
+		"consistence/coding-standard": "^0.12.0",
 		"phing/phing": "~2.15",
 		"phpunit/phpunit": "~4.8",
 		"jakub-onderka/php-parallel-lint": "~0.9",
 		"satooshi/php-coveralls": "dev-master",
-		"slevomat/coding-standard": "^1.0"
+		"slevomat/coding-standard": "^1.1.1"
 	},
 	"autoload": {
 		"psr-4": {

@@ -7,13 +7,10 @@
 	<property file="${path.build.properties}"/>
 
 	<target name="build" depends="
-		composer,
-		phplint,
-		phpcs,
-		tests
-		"/>
+		install
+	"/>
 
-	<target name="composer">
+	<target name="install">
 		<exec
 				executable="${path.composer.executable}"
 				logoutput="true"
@@ -24,7 +21,13 @@
 		</exec>
 	</target>
 
-	<target name="phplint">
+	<target name="tests" depends="
+		tests:phplint,
+		tests:phpcs,
+		tests:phpunit
+	"/>
+
+	<target name="tests:phplint">
 		<exec
 				executable="${path.phplint.executable}"
 				logoutput="true"
@@ -36,7 +39,7 @@
 		</exec>
 	</target>
 
-	<target name="phpcs">
+	<target name="tests:phpcs">
 		<exec
 				executable="vendor/bin/phpcs"
 				logoutput="true"
@@ -53,7 +56,7 @@
 		</exec>
 	</target>
 
-	<target name="phpcs-fix">
+	<target name="tests:phpcs-fix">
 		<exec
 				executable="vendor/bin/phpcbf"
 				logoutput="true"
@@ -69,7 +72,7 @@
 		</exec>
 	</target>
 
-	<target name="tests">
+	<target name="tests:phpunit">
 		<exec
 				executable="${path.phpunit.executable}"
 				logoutput="true"
