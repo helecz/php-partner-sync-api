@@ -1,6 +1,6 @@
 <?php
 
-namespace HelePartnerSyncApi;
+namespace HelePartnerSyncApi\Responses;
 
 class SuccessResponse extends Response
 {
@@ -37,4 +37,5 @@ class SuccessResponse extends Response
 	{
 		return 'ok';
 	}
+
 }

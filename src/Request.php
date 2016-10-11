@@ -95,5 +95,4 @@ class Request
 		$this->expectedVersion = $data['expectedVersion'];
 	}
 
-
 }

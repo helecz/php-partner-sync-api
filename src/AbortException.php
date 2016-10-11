@@ -3,6 +3,7 @@
 namespace HelePartnerSyncApi;
 
 use Exception;
+use HelePartnerSyncApi\Responses\Response;
 
 class AbortException extends Exception
 {

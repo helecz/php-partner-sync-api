@@ -6,6 +6,7 @@ use Closure;
 use Exception;
 use HelePartnerSyncApi\Methods\CheckSlots;
 use HelePartnerSyncApi\Methods\CreateReservation;
+use HelePartnerSyncApi\Responses\ErrorResponse;
 use Throwable;
 
 class Application

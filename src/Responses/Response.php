@@ -1,6 +1,6 @@
 <?php
 
-namespace HelePartnerSyncApi;
+namespace HelePartnerSyncApi\Responses;
 
 abstract class Response
 {

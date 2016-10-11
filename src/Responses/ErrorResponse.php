@@ -1,6 +1,6 @@
 <?php
 
-namespace HelePartnerSyncApi;
+namespace HelePartnerSyncApi\Responses;
 
 class ErrorResponse extends Response
 {
@@ -38,4 +38,5 @@ class ErrorResponse extends Response
 	{
 		return $this->message;
 	}
+
 }

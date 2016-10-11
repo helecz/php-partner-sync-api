@@ -43,4 +43,5 @@ class CheckSlots extends Method
 			isset($data['parameters']) ? (array)$data['parameters'] : array(),
 		);
 	}
+
 }

@@ -6,6 +6,7 @@ use Closure;
 use HelePartnerSyncApi\Methods\CheckSlots;
 use HelePartnerSyncApi\Methods\CreateReservation;
 use HelePartnerSyncApi\Methods\Method;
+use HelePartnerSyncApi\Responses\SuccessResponse;
 use LogicException;
 
 class Client
@@ -72,4 +73,5 @@ class Client
 
 		return $this->methods[$method];
 	}
+
 }
