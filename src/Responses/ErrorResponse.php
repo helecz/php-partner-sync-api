@@ -20,9 +20,7 @@ class ErrorResponse extends Response
 	 */
 	public function getData()
 	{
-		return array(
-			'error' => $this->message
-		);
+		return array();
 	}
 
 	/**
@@ -33,4 +31,11 @@ class ErrorResponse extends Response
 		return false;
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getMessage()
+	{
+		return $this->message;
+	}
 }

@@ -30,4 +30,11 @@ class SuccessResponse extends Response
 		return true;
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getMessage()
+	{
+		return 'ok';
+	}
 }
