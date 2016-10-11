@@ -15,7 +15,6 @@ class CreateReservation extends Method
 
 	/**
 	 * @param array $data
-	 * @return array
 	 */
 	public function validateResponseData(array $data)
 	{
@@ -31,4 +30,5 @@ class CreateReservation extends Method
 		return array(// TODO
 		);
 	}
+
 }

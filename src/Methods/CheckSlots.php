@@ -18,7 +18,6 @@ class CheckSlots extends Method
 
 	/**
 	 * @param array $data
-	 * @return array
 	 */
 	public function validateResponseData(array $data)
 	{
@@ -40,7 +39,7 @@ class CheckSlots extends Method
 
 		return array(
 			new DateTime($data['date']),
-			isset($data['parameters']) ? (array)$data['parameters'] : array(),
+			isset($data['parameters']) ? (array) $data['parameters'] : array(),
 		);
 	}
 

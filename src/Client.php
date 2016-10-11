@@ -2,9 +2,6 @@
 
 namespace HelePartnerSyncApi;
 
-use Closure;
-use HelePartnerSyncApi\Methods\CheckSlots;
-use HelePartnerSyncApi\Methods\CreateReservation;
 use HelePartnerSyncApi\Methods\Method;
 use HelePartnerSyncApi\Responses\SuccessResponse;
 use LogicException;
@@ -59,6 +56,10 @@ class Client
 		if ($request->getExpectedVersion() !== self::VERSION) {
 			throw new LogicException(sprintf('Request expected version %s, but client is %s', $request->getExpectedVersion(), self::VERSION));
 		}
+
+		if ($request->getPartnerId() !== $this->partnerId) {
+			throw new LogicException(sprintf('Request was identified by ID %s, but client is %s', $request->getPartnerId(), $this->partnerId));
+		}
 	}
 
 	/**
@@ -68,7 +69,7 @@ class Client
 	private function getMethod($method)
 	{
 		if (!isset($this->methods[$method])) {
-			throw new LogicException("Method $method was not registered!");
+			throw new LogicException(sprintf('Method %s was not registered!', $method));
 		}
 
 		return $this->methods[$method];

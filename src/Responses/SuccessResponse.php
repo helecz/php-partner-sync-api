@@ -4,6 +4,7 @@ namespace HelePartnerSyncApi\Responses;
 
 class SuccessResponse extends Response
 {
+
 	/**
 	 * @var mixed[]
 	 */

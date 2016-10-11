@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <ruleset name="HelePartnerSyncApi">
-	<rule ref="vendor/consistence/coding-standard/Consistence/ruleset.xml" />
+	<rule ref="vendor/consistence/coding-standard/Consistence/ruleset.xml">
+		<exclude name="Generic.Arrays.DisallowLongArraySyntax.Found"/>
+	</rule>
 	<rule ref="vendor/slevomat/coding-standard/SlevomatCodingStandard/ruleset.xml">
 		<exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameAfterKeyword"/>
 		<exclude name="SlevomatCodingStandard.Namespaces.UseOnlyWhitelistedNamespaces"/>
