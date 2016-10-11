@@ -67,7 +67,7 @@ class Client
 	private function getMethod($method)
 	{
 		if (!isset($this->methods[$method])) {
-			throw new LogicException("Unknown method $method!");
+			throw new LogicException("Method $method was not registered!");
 		}
 
 		return $this->methods[$method];
