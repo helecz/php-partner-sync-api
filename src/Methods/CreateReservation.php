@@ -2,6 +2,8 @@
 
 namespace HelePartnerSyncApi\Methods;
 
+use DateTime;
+
 class CreateReservation extends Method
 {
 
@@ -15,10 +17,11 @@ class CreateReservation extends Method
 
 	/**
 	 * @param array $data
+	 * @return array
 	 */
-	public function validateResponseData(array $data)
+	public function parseResponseData($data)
 	{
-		// TODO
+		return array();
 	}
 
 	/**
@@ -27,7 +30,11 @@ class CreateReservation extends Method
 	 */
 	public function parseRequestData(array $data)
 	{
-		return array(// TODO
+		return array(
+			DateTime::createFromFormat(DateTime::W3C, $data['startDateTime']),
+			DateTime::createFromFormat(DateTime::W3C, $data['endDateTime']),
+			(int) $data['quantity'],
+			(array) $data['parameters'],
 		);
 	}
 

@@ -35,8 +35,9 @@ abstract class Method
 
 	/**
 	 * @param array $data
+	 * @return array
 	 */
-	abstract public function validateResponseData(array $data);
+	abstract public function parseResponseData($data);
 
 	/**
 	 * @param array $data

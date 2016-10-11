@@ -46,9 +46,11 @@ class Client
 			$method->parseRequestData($request->getData())
 		);
 
-		$method->validateResponseData($responseData);
-
-		throw new AbortException(new SuccessResponse($responseData));
+		throw new AbortException(
+			new SuccessResponse(
+				$method->parseResponseData($responseData)
+			)
+		);
 	}
 
 	private function validateRequest(Request $request)
