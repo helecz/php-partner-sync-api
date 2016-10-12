@@ -7,6 +7,7 @@ use Exception;
 use HelePartnerSyncApi\Methods\CheckSlots;
 use HelePartnerSyncApi\Methods\CreateReservation;
 use HelePartnerSyncApi\Responses\ErrorResponse;
+use LogicException;
 use Throwable;
 
 class Application
@@ -53,6 +54,8 @@ class Application
 
 	public function run()
 	{
+		$this->validateEnvironment();
+
 		try {
 			$request = $this->getRequest();
 			$this->client->run($request);
@@ -81,6 +84,13 @@ class Application
 			$this->request = new Request(file_get_contents('php://input'));
 		}
 		return $this->request;
+	}
+
+	private function validateEnvironment()
+	{
+		if (headers_sent()) {
+			throw new LogicException('Headers already sent');
+		}
 	}
 
 }
