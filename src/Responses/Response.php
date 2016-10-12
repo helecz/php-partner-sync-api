@@ -7,6 +7,8 @@ abstract class Response
 
 	public function render()
 	{
+		$this->sendHttpCode();
+
 		$response = array(
 			'success' => $this->isSuccessful(),
 			'message' => $this->getMessage(),
@@ -30,5 +32,16 @@ abstract class Response
 	 * @return string
 	 */
 	abstract public function getMessage();
+
+	private function sendHttpCode()
+	{
+		$httpCode = $this->isSuccessful() ? 200 : 500;
+
+		if (function_exists('http_response_code')) {
+			http_response_code($httpCode);
+		} else {
+			header('HTTP/1.1 ' . $httpCode);
+		}
+	}
 
 }
