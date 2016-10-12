@@ -8,6 +8,11 @@ class Request
 {
 
 	/**
+	 * @var string
+	 */
+	private $rawBody;
+
+	/**
 	 * @var mixed[]
 	 */
 	private $data;
@@ -23,16 +28,32 @@ class Request
 	private $partnerId;
 
 	/**
+	 * @var string|null
+	 */
+	private $signature;
+
+	/**
 	 * @var string
 	 */
 	private $expectedVersion;
 
 	/**
+	 * @param string[] $headers
 	 * @param string $httpBody
 	 */
-	public function __construct($httpBody)
+	public function __construct(array $headers, $httpBody)
 	{
+		$this->signature = isset($headers[Client::SIGNATURE_HEADER]) ? $headers[Client::SIGNATURE_HEADER] : null;
+		$this->rawBody = $httpBody;
 		$this->parseBody(json_decode($httpBody));
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getRawBody()
+	{
+		return $this->rawBody;
 	}
 
 	/**
@@ -57,6 +78,14 @@ class Request
 	public function getPartnerId()
 	{
 		return $this->partnerId;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getSignature()
+	{
+		return $this->signature;
 	}
 
 	/**

@@ -10,8 +10,13 @@ class ErrorResponse extends Response
 	 */
 	private $message;
 
-	public function __construct($message)
+	/**
+	 * @param string $secret
+	 * @param string $message
+	 */
+	public function __construct($secret, $message)
 	{
+		parent::__construct($secret);
 		$this->message = $message;
 	}
 

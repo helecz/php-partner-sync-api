@@ -2,20 +2,35 @@
 
 namespace HelePartnerSyncApi\Responses;
 
+use HelePartnerSyncApi\Client;
+
 abstract class Response
 {
 
+	/**
+	 * @var string
+	 */
+	private $secret;
+
+	/**
+	 * @param string $secret
+	 */
+	public function __construct($secret)
+	{
+		$this->secret = $secret;
+	}
+
 	public function render()
 	{
-		$this->sendHttpCode();
-
-		$response = array(
+		$response = json_encode(array(
 			'success' => $this->isSuccessful(),
 			'message' => $this->getMessage(),
 			'data' => $this->getData(),
-		);
+		));
 
-		echo json_encode($response);
+		$signature = hash_hmac(Client::SIGNATURE_ALGORITHM, $response, $this->secret);
+
+		$this->send($signature, $response);
 	}
 
 	/**
@@ -33,15 +48,18 @@ abstract class Response
 	 */
 	abstract public function getMessage();
 
-	private function sendHttpCode()
+	/**
+	 * @param string $signature
+	 * @param string $response
+	 */
+	private function send($signature, $response)
 	{
 		$httpCode = $this->isSuccessful() ? 200 : 500;
 
-		if (function_exists('http_response_code')) {
-			http_response_code($httpCode);
-		} else {
-			header('HTTP/1.1 ' . $httpCode);
-		}
+		header('HTTP/1.1 ' . $httpCode);
+		header(Client::SIGNATURE_HEADER . ': ' . $signature);
+
+		echo $response;
 	}
 
 }

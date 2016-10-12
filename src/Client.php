@@ -13,20 +13,25 @@ class Client
 {
 
 	const VERSION = '1.0.0';
+	const SIGNATURE_HEADER = 'X-Hele-Signature';
+	const SIGNATURE_ALGORITHM = 'sha1';
 
 	/**
 	 * @var string
 	 */
-	private $partnerId;
+	private $secret;
 
 	/**
 	 * @var Method[]
 	 */
 	private $methods;
 
-	public function __construct($partnerId)
+	/**
+	 * @param string $secret
+	 */
+	public function __construct($secret)
 	{
-		$this->partnerId = $partnerId;
+		$this->secret = $secret;
 	}
 
 	public function registerMethod(Method $method)
@@ -51,13 +56,14 @@ class Client
 			);
 
 		} catch (Exception $e) {
-			return new ErrorResponse($e->getMessage());
+			return new ErrorResponse($this->secret, $e->getMessage());
 
 		} catch (Throwable $e) {
-			return new ErrorResponse($e->getMessage());
+			return new ErrorResponse($this->secret, $e->getMessage());
 		}
 
 		return new SuccessResponse(
+			$this->secret,
 			$method->parseResponseData($responseData)
 		);
 	}
@@ -68,8 +74,8 @@ class Client
 			throw new LogicException(sprintf('Request expected version %s, but client is %s', $request->getExpectedVersion(), self::VERSION));
 		}
 
-		if ($request->getPartnerId() !== $this->partnerId) {
-			throw new LogicException(sprintf('Request was identified by ID %s, but client is %s', $request->getPartnerId(), $this->partnerId));
+		if (hash_hmac(self::SIGNATURE_ALGORITHM, $request->getRawBody(), $this->secret) !== $request->getSignature()) {
+			throw new LogicException('Signature in HTTP Request is invalid!');
 		}
 	}
 

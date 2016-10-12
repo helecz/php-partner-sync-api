@@ -20,11 +20,11 @@ class Application
 	private $request;
 
 	/**
-	 * @param string $partnerId
+	 * @param string $secret
 	 */
-	public function __construct($partnerId)
+	public function __construct($secret)
 	{
-		$this->client = new Client($partnerId);
+		$this->client = new Client($secret);
 	}
 
 	public function setRequest(Request $request)
@@ -61,7 +61,7 @@ class Application
 	private function getRequest()
 	{
 		if ($this->request === null) {
-			$this->request = new Request(file_get_contents('php://input'));
+			$this->request = new Request(getallheaders(), file_get_contents('php://input'));
 		}
 		return $this->request;
 	}

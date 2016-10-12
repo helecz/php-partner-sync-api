@@ -10,8 +10,13 @@ class SuccessResponse extends Response
 	 */
 	private $data;
 
-	public function __construct(array $data)
+	/**
+	 * @param string $secret
+	 * @param array $data
+	 */
+	public function __construct($secret, array $data)
 	{
+		parent::__construct($secret);
 		$this->data = $data;
 	}
 
