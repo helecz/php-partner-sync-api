@@ -23,11 +23,6 @@ class Request
 	private $method;
 
 	/**
-	 * @var string
-	 */
-	private $partnerId;
-
-	/**
 	 * @var string|null
 	 */
 	private $signature;
@@ -45,7 +40,7 @@ class Request
 	{
 		$this->signature = isset($headers[Client::HEADER_SIGNATURE]) ? $headers[Client::HEADER_SIGNATURE] : null;
 		$this->rawBody = $httpBody;
-		$this->parseBody(json_decode($httpBody));
+		$this->parseBody(json_decode($httpBody, true));
 	}
 
 	/**
@@ -70,14 +65,6 @@ class Request
 	public function getData()
 	{
 		return $this->data;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getPartnerId()
-	{
-		return $this->partnerId;
 	}
 
 	/**
@@ -110,17 +97,12 @@ class Request
 			throw new LogicException('Missing method field in HTTP request body');
 		}
 
-		if (!isset($data['partnerId'])) {
-			throw new LogicException('Missing partnerId field in HTTP request body');
-		}
-
 		if (!isset($data['expectedVersion'])) {
 			throw new LogicException('Missing expectedVersion field in HTTP request body');
 		}
 
 		$this->data = $data['data'];
 		$this->method = $data['method'];
-		$this->partnerId = $data['partnerId'];
 		$this->expectedVersion = $data['expectedVersion'];
 	}
 
