@@ -58,6 +58,7 @@ abstract class Response
 
 		header('HTTP/1.1 ' . $httpCode);
 		header(Client::SIGNATURE_HEADER . ': ' . $signature);
+		header(Client::SIGNATURE_ALGORITHM_HEADER . ': ' . Client::SIGNATURE_ALGORITHM);
 
 		echo $response;
 	}
