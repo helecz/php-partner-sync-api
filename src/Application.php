@@ -3,12 +3,8 @@
 namespace HelePartnerSyncApi;
 
 use Closure;
-use Exception;
 use HelePartnerSyncApi\Methods\CheckSlots;
 use HelePartnerSyncApi\Methods\CreateReservation;
-use HelePartnerSyncApi\Responses\ErrorResponse;
-use LogicException;
-use Throwable;
 
 class Application
 {
@@ -54,25 +50,9 @@ class Application
 
 	public function run()
 	{
-		$this->validateEnvironment();
+		$request = $this->getRequest();
 
-		try {
-			$request = $this->getRequest();
-			$this->client->run($request);
-
-		} catch (AbortException $e) {
-			$e->getResponse()->render();
-
-		} catch (Exception $e) {
-			$response = new ErrorResponse($e->getMessage());
-			$response->render();
-
-		} catch (Throwable $e) {
-			$response = new ErrorResponse($e->getMessage());
-			$response->render();
-		}
-
-		exit;
+		return $this->client->run($request);
 	}
 
 	/**
@@ -84,13 +64,6 @@ class Application
 			$this->request = new Request(file_get_contents('php://input'));
 		}
 		return $this->request;
-	}
-
-	private function validateEnvironment()
-	{
-		if (headers_sent()) {
-			throw new LogicException('Headers already sent');
-		}
 	}
 
 }

@@ -2,9 +2,12 @@
 
 namespace HelePartnerSyncApi;
 
+use Exception;
 use HelePartnerSyncApi\Methods\Method;
+use HelePartnerSyncApi\Responses\ErrorResponse;
 use HelePartnerSyncApi\Responses\SuccessResponse;
 use LogicException;
+use Throwable;
 
 class Client
 {
@@ -33,23 +36,29 @@ class Client
 
 	/**
 	 * @param Request $request
-	 * @throws AbortException
+	 * @return SuccessResponse|ErrorResponse
 	 */
 	public function run(Request $request)
 	{
-		$this->validateRequest($request);
+		try {
+			$this->validateRequest($request);
 
-		$method = $this->getMethod($request->getMethod());
+			$method = $this->getMethod($request->getMethod());
 
-		$responseData = call_user_func_array(
-			$method->getCallback(),
-			$method->parseRequestData($request->getData())
-		);
+			$responseData = call_user_func_array(
+				$method->getCallback(),
+				$method->parseRequestData($request->getData())
+			);
 
-		throw new AbortException(
-			new SuccessResponse(
-				$method->parseResponseData($responseData)
-			)
+		} catch (Exception $e) {
+			return new ErrorResponse($e->getMessage());
+
+		} catch (Throwable $e) {
+			return new ErrorResponse($e->getMessage());
+		}
+
+		return new SuccessResponse(
+			$method->parseResponseData($responseData)
 		);
 	}
 
