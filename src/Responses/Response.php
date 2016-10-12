@@ -57,8 +57,8 @@ abstract class Response
 		$httpCode = $this->isSuccessful() ? 200 : 500;
 
 		header('HTTP/1.1 ' . $httpCode);
-		header(Client::SIGNATURE_HEADER . ': ' . $signature);
-		header(Client::SIGNATURE_ALGORITHM_HEADER . ': ' . Client::SIGNATURE_ALGORITHM);
+		header(Client::HEADER_SIGNATURE . ': ' . $signature);
+		header(Client::HEADER_SIGNATURE_ALGORITHM . ': ' . Client::SIGNATURE_ALGORITHM);
 
 		echo $response;
 	}

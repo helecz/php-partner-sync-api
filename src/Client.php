@@ -13,8 +13,8 @@ class Client
 {
 
 	const VERSION = '1.0.0';
-	const SIGNATURE_HEADER = 'X-Hele-Signature';
-	const SIGNATURE_ALGORITHM_HEADER = 'X-Hele-Signature-Algorithm';
+	const HEADER_SIGNATURE = 'X-Hele-Signature';
+	const HEADER_SIGNATURE_ALGORITHM = 'X-Hele-Signature-Algorithm';
 	const SIGNATURE_ALGORITHM = 'sha1';
 
 	/**

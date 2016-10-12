@@ -43,7 +43,7 @@ class Request
 	 */
 	public function __construct(array $headers, $httpBody)
 	{
-		$this->signature = isset($headers[Client::SIGNATURE_HEADER]) ? $headers[Client::SIGNATURE_HEADER] : null;
+		$this->signature = isset($headers[Client::HEADER_SIGNATURE]) ? $headers[Client::HEADER_SIGNATURE] : null;
 		$this->rawBody = $httpBody;
 		$this->parseBody(json_decode($httpBody));
 	}
