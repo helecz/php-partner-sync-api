@@ -28,7 +28,7 @@ class Application
 		$this->client = new Client($secret);
 		$this->client->registerMethod(new CheckHealth());
 
-		$this->requestFactory = new BaseRequestFactory();
+		$this->requestFactory = new DefaultRequestFactory();
 	}
 
 	/**

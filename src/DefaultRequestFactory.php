@@ -2,7 +2,7 @@
 
 namespace HelePartnerSyncApi;
 
-class BaseRequestFactory implements RequestFactory
+class DefaultRequestFactory implements RequestFactory
 {
 
 	/**
