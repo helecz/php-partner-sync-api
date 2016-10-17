@@ -26,7 +26,7 @@ abstract class Response
 			'success' => $this->isSuccessful(),
 			'message' => $this->getMessage(),
 			'data' => $this->getData(),
-		));
+		), JSON_PRETTY_PRINT);
 
 		$signature = hash_hmac(Client::SIGNATURE_ALGORITHM, $response, $this->secret);
 
