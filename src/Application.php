@@ -16,19 +16,12 @@ class Application
 	private $client;
 
 	/**
-	 * @var RequestFactory
-	 */
-	private $requestFactory;
-
-	/**
 	 * @param string $secret
 	 */
 	public function __construct($secret)
 	{
-		$this->client = new Client($secret);
+		$this->client = new Client($secret, new DefaultRequestFactory());
 		$this->client->registerMethod(new CheckHealth());
-
-		$this->requestFactory = new DefaultRequestFactory();
 	}
 
 	/**
@@ -49,8 +42,7 @@ class Application
 
 	public function run()
 	{
-		$this->client->run($this->requestFactory)
-			->render();
+		$this->client->run()->render();
 	}
 
 }
