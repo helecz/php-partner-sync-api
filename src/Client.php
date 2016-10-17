@@ -30,13 +30,20 @@ class Client
 	private $methods;
 
 	/**
-	 * @param string $secret
+	 * @var RequestFactory
 	 */
-	public function __construct($secret)
+	private $requestFactory;
+
+	/**
+	 * @param string $secret
+	 * @param RequestFactory $requestFactory
+	 */
+	public function __construct($secret, RequestFactory $requestFactory)
 	{
 		Validator::checkString($secret);
 
 		$this->secret = $secret;
+		$this->requestFactory = $requestFactory;
 	}
 
 	public function registerMethod(Method $method)
@@ -45,13 +52,12 @@ class Client
 	}
 
 	/**
-	 * @param RequestFactory $requestFactory
 	 * @return SuccessResponse|ErrorResponse
 	 */
-	public function run(RequestFactory $requestFactory)
+	public function run()
 	{
 		try {
-			$request = $requestFactory->createRequest();
+			$request = $this->requestFactory->createRequest();
 
 			$this->validateRequest($request);
 
