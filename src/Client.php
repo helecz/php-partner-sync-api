@@ -34,6 +34,8 @@ class Client
 	 */
 	public function __construct($secret)
 	{
+		Validator::checkString($secret);
+
 		$this->secret = $secret;
 	}
 

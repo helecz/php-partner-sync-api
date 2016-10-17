@@ -41,17 +41,12 @@ class CheckSlotsTest extends MethodTestCase
 
 	public function testFailures()
 	{
+		$now = new DateTime();
+
 		$this->checkException(
 			array(),
 			array(),
-			'Missing "date" field'
-		);
-		$this->checkException(
-			array(
-				'date' => 'now'
-			),
-			array(),
-			'Missing "parameters" field'
+			'Missing keys in data: `date, parameters`'
 		);
 		$this->checkException(
 			array(
@@ -61,11 +56,11 @@ class CheckSlotsTest extends MethodTestCase
 			array(
 				array(),
 			),
-			'Missing "startDateTime" field'
+			'DateTime expected, string (now) given.'
 		);
 		$this->checkException(
 			array(
-				'date' => 'now',
+				'date' => $now->format(DateTime::W3C),
 				'parameters' => array(),
 			),
 			array(
@@ -73,24 +68,11 @@ class CheckSlotsTest extends MethodTestCase
 					'startDateTime' => new DateTime(),
 				)
 			),
-			'Missing "endDateTime" field'
+			'Missing keys in data: `endDateTime, capacity`'
 		);
 		$this->checkException(
 			array(
-				'date' => 'now',
-				'parameters' => array(),
-			),
-			array(
-				array(
-					'startDateTime' => new DateTime(),
-					'endDateTime' => new DateTime(),
-				)
-			),
-			'Missing "capacity" field'
-		);
-		$this->checkException(
-			array(
-				'date' => 'now',
+				'date' => $now->format(DateTime::W3C),
 				'parameters' => array(),
 			),
 			array(
@@ -100,11 +82,11 @@ class CheckSlotsTest extends MethodTestCase
 					'capacity' => 'string',
 				)
 			),
-			'expected to be integer, string given'
+			'Int expected, string (string) given.'
 		);
 		$this->checkException(
 			array(
-				'date' => 'now',
+				'date' => $now->format(DateTime::W3C),
 				'parameters' => array(),
 			),
 			array(
@@ -114,7 +96,7 @@ class CheckSlotsTest extends MethodTestCase
 					'capacity' => 1,
 				)
 			),
-			'expected to be DateTime object, string given'
+			'DateTime expected, string (not-a-datetime) given.'
 		);
 	}
 
