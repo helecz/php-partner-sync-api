@@ -43,12 +43,14 @@ class Client
 	}
 
 	/**
-	 * @param Request $request
+	 * @param RequestFactory $requestFactory
 	 * @return SuccessResponse|ErrorResponse
 	 */
-	public function run(Request $request)
+	public function run(RequestFactory $requestFactory)
 	{
 		try {
+			$request = $requestFactory->createRequest();
+
 			$this->validateRequest($request);
 
 			$method = $this->getMethod($request->getMethod());
