@@ -13,7 +13,7 @@ class Request
 	private $rawBody;
 
 	/**
-	 * @var mixed[]
+	 * @var array
 	 */
 	private $data;
 
@@ -66,7 +66,7 @@ class Request
 	}
 
 	/**
-	 * @return mixed[]
+	 * @return array
 	 */
 	public function getData()
 	{

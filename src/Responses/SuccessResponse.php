@@ -6,7 +6,7 @@ class SuccessResponse extends Response
 {
 
 	/**
-	 * @var mixed[]
+	 * @var array
 	 */
 	private $data;
 
