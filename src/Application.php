@@ -48,16 +48,27 @@ class Application
 		$this->client->registerMethod(new CreateReservation($callback));
 	}
 
-	/**
-	 * @throws AbortException
-	 */
 	public function run()
 	{
 		$request = $this->getRequest();
-
-		if ($request->hasHeader(Client::HEADER_CALL)) {
-			throw new AbortException($this->client->run($request));
+		if (!$this->isHeleRequest($request)) {
+			return;
 		}
+
+		$this->client->run($request)
+			->render();
+
+		exit;
+	}
+
+	/**
+	 * @param Request $request
+	 * @return bool
+	 */
+	private function isHeleRequest(Request $request)
+	{
+		return $request->hasHeader(Client::HEADER_SIGNATURE)
+			&& $request->hasHeader(Client::HEADER_SIGNATURE_ALGORITHM);
 	}
 
 	/**

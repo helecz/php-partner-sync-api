@@ -14,7 +14,6 @@ class Client
 
 	const VERSION = '1.0.0';
 
-	const HEADER_CALL = 'X-Hele';
 	const HEADER_SIGNATURE = 'X-Hele-Signature';
 	const HEADER_SIGNATURE_ALGORITHM = 'X-Hele-Signature-Algorithm';
 

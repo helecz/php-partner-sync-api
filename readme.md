@@ -22,12 +22,7 @@ $client->onCheckSlots(function (DateTime $date) {
 $client->onCreateReservation(function (DateTime $startDateTime, DateTime $endDateTime, $quantity, array $parameters) {
     // $this->reservationFacade->createReservation(...);
 });
-try {
-	$client->run();
-} catch (\HelePartnerSyncApi\AbortException $e) {
-	$e->getResponse()->send();
-	exit;
-}
+$client->run();
 ```
 
 If reservation cannot be created for some reason, you can throw any Exception and the reservation on Hele website will not be performed.
