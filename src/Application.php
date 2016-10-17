@@ -3,6 +3,7 @@
 namespace HelePartnerSyncApi;
 
 use Closure;
+use HelePartnerSyncApi\Methods\CheckHealth;
 use HelePartnerSyncApi\Methods\CheckSlots;
 use HelePartnerSyncApi\Methods\CreateReservation;
 
@@ -25,6 +26,7 @@ class Application
 	public function __construct($secret)
 	{
 		$this->client = new Client($secret);
+		$this->client->registerMethod(new CheckHealth());
 	}
 
 	public function setRequest(Request $request)
