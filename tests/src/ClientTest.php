@@ -19,7 +19,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
 	public function testSuccess()
 	{
-		$data = array('foo' => 'bar');
+		$data = array($this->method => 'bar');
 		$method = $this->getMethodMock($data);
 		$requestFactory = $this->getRequestFactoryMock();
 
