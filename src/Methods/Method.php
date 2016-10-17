@@ -23,7 +23,7 @@ abstract class Method
 
 	/**
 	 * @param Request $request
-	 * @return array
+	 * @return mixed
 	 */
 	public function call(Request $request)
 	{
@@ -39,8 +39,8 @@ abstract class Method
 	abstract public function getName();
 
 	/**
-	 * @param array $data
-	 * @return array
+	 * @param mixed $data
+	 * @return mixed
 	 */
 	abstract protected function parseResponseData($data);
 

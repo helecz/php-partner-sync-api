@@ -17,7 +17,7 @@ class CheckSlots extends Method
 	}
 
 	/**
-	 * @param array $data
+	 * @param mixed $data
 	 * @return array
 	 */
 	protected function parseResponseData($data)

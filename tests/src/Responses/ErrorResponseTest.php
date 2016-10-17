@@ -15,7 +15,7 @@ class ErrorResponseTest extends PHPUnit_Framework_TestCase
 
 		$this->assertSame($exception, $response->getException());
 		$this->assertSame($exception->getMessage(), $response->getMessage());
-		$this->assertSame(array(), $response->getData());
+		$this->assertNull($response->getData());
 		$this->assertFalse($response->isSuccessful());
 	}
 

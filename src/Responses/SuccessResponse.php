@@ -6,22 +6,22 @@ class SuccessResponse extends Response
 {
 
 	/**
-	 * @var array
+	 * @var mixed
 	 */
 	private $data;
 
 	/**
 	 * @param string $secret
-	 * @param array $data
+	 * @param mixed $data
 	 */
-	public function __construct($secret, array $data)
+	public function __construct($secret, $data)
 	{
 		parent::__construct($secret);
 		$this->data = $data;
 	}
 
 	/**
-	 * @return array
+	 * @return mixed
 	 */
 	public function getData()
 	{

@@ -17,14 +17,14 @@ class CreateReservation extends Method
 	}
 
 	/**
-	 * @param array $data
-	 * @return array
+	 * @param mixed $data
+	 * @return null
 	 */
 	protected function parseResponseData($data)
 	{
 		Validator::checkStructure($data, Validator::TYPE_NULL);
 
-		return array();
+		return null;
 	}
 
 	/**

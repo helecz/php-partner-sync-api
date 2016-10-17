@@ -21,8 +21,8 @@ class CheckHealth extends Method
 	}
 
 	/**
-	 * @param array $data
-	 * @return array
+	 * @param mixed $data
+	 * @return mixed
 	 */
 	protected function parseResponseData($data)
 	{
