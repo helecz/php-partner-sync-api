@@ -72,7 +72,7 @@ class Validator
 		$listStructure = self::isList($structure);
 		if (!$listStructure) {
 			if (count($data) > 0 && self::isList($data)) {
-				throw new LogicException('Nested data must be list');
+				throw new LogicException('Nested data must not be list');
 			}
 
 			$diff = array_diff_key($data, $structure);
