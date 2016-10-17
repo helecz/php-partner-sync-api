@@ -50,7 +50,22 @@ class CreateReservationTest extends MethodTestCase
 		} catch (Exception $e) {
 			$this->assertSame($exception, $e);
 		}
+	}
 
+	public function testExceptions()
+	{
+		$startDateTime = new DateTime('+1 hour');
+		$endDateTime = new DateTime('+2 hours');
+		$this->checkException(
+			null,
+			null,
+			'Array expected, NULL given.'
+		);
+		$this->checkException(
+			array(),
+			null,
+			'Missing keys in data: `startDateTime, endDateTime, quantity, parameters`'
+		);
 		$this->checkException(
 			array(
 				'startDateTime' => $startDateTime->format(DateTime::W3C),
@@ -58,18 +73,47 @@ class CreateReservationTest extends MethodTestCase
 				'quantity' => 1,
 				'parameters' => array(),
 			),
-			array('abc'),
-			'Null expected, array given.'
+			'response-data',
+			'Null expected, string (response-data) given.'
+		);
+		$this->checkException(
+			array(
+				'startDateTime' => 1,
+				'endDateTime' => $endDateTime->format(DateTime::W3C),
+				'quantity' => 1,
+				'parameters' => array(),
+			),
+			null,
+			'DateTime expected, integer (1) given.'
+		);
+		$this->checkException(
+			array(
+				'startDateTime' => $startDateTime->format(DateTime::W3C),
+				'endDateTime' => $endDateTime->format(DateTime::W3C),
+				'quantity' => 'quantity',
+				'parameters' => array(),
+			),
+			null,
+			'Int expected, string (quantity) given.'
+		);
+		$this->checkException(
+			array(
+				'startDateTime' => $startDateTime->format(DateTime::W3C),
+				'endDateTime' => $endDateTime->format(DateTime::W3C),
+				'quantity' => 1,
+				'parameters' => 'param',
+			),
+			null,
+			'Array expected, string (param) given.'
 		);
 	}
 
-
 	/**
-	 * @param array $requestData
-	 * @param array $responseData
+	 * @param mixed $requestData
+	 * @param mixed $responseData
 	 * @param string $error
 	 */
-	private function checkException(array $requestData, array $responseData, $error)
+	private function checkException($requestData, $responseData, $error)
 	{
 		try {
 			$request = $this->getRequestMock($requestData);
