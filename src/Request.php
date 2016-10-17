@@ -23,6 +23,11 @@ class Request
 	private $method;
 
 	/**
+	 * @var string[]
+	 */
+	private $headers;
+
+	/**
 	 * @var string|null
 	 */
 	private $signature;
@@ -40,6 +45,7 @@ class Request
 	{
 		$this->signature = isset($headers[Client::HEADER_SIGNATURE]) ? $headers[Client::HEADER_SIGNATURE] : null;
 		$this->rawBody = $httpBody;
+		$this->headers = $headers;
 		$this->parseBody(json_decode($httpBody, true));
 	}
 
@@ -104,6 +110,15 @@ class Request
 		$this->data = $data['data'];
 		$this->method = $data['method'];
 		$this->expectedVersion = $data['expectedVersion'];
+	}
+
+	/**
+	 * @param string $header
+	 * @return bool
+	 */
+	public function hasHeader($header)
+	{
+		return array_key_exists($header, $this->headers);
 	}
 
 }

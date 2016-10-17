@@ -48,11 +48,16 @@ class Application
 		$this->client->registerMethod(new CreateReservation($callback));
 	}
 
+	/**
+	 * @throws AbortException
+	 */
 	public function run()
 	{
 		$request = $this->getRequest();
 
-		return $this->client->run($request);
+		if ($request->hasHeader(Client::HEADER_CALL)) {
+			throw new AbortException($this->client->run($request));
+		}
 	}
 
 	/**

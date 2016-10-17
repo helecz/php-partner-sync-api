@@ -15,14 +15,19 @@ The best way to install this library is using [Composer](http://getcomposer.org/
 ## Simple usage
 
 ```php
-$client = new HelePartnerSyncApi\Application('id-assigned-to-you');
+$client = new \HelePartnerSyncApi\Application('id-assigned-to-you');
 $client->onCheckSlots(function (DateTime $date) {
     // return $this->reservationFacade->getFreeSlots($date);
 });
 $client->onCreateReservation(function (DateTime $startDateTime, DateTime $endDateTime, $quantity, array $parameters) {
     // $this->reservationFacade->createReservation(...);
 });
-$client->run();
+try {
+	$client->run();
+} catch (\HelePartnerSyncApi\AbortException $e) {
+	$e->getResponse()->send();
+	exit;
+}
 ```
 
 If reservation cannot be created for some reason, you can throw any Exception and the reservation on Hele website will not be performed.
