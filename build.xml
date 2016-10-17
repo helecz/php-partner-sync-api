@@ -24,6 +24,7 @@
 	<target name="tests" depends="
 		tests:phplint,
 		tests:phpcs,
+		tests:phpstan,
 		tests:phpunit
 	"/>
 
@@ -82,6 +83,23 @@
 			<arg value="--configuration"/>
 			<arg value="${path.phpunit.configuration}"/>
 			<arg path="${path.tests}"/>
+		</exec>
+	</target>
+
+	<target name="tests:phpstan">
+		<exec
+				executable="${path.php.executable}"
+				logoutput="true"
+				passthru="true"
+				checkreturn="true"
+		>
+			<arg line="-d memory_limit=1G"/>
+			<arg path="${path.phpstan.executable}"/>
+			<arg value="analyse"/>
+			<arg value="-c"/>
+			<arg path="${path.phpstan.config}"/>
+			<arg path="${path.src}"/>
+			<arg path="${path.tests.src}"/>
 		</exec>
 	</target>
 

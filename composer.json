@@ -16,6 +16,7 @@
 		"consistence/coding-standard": "^0.12.0",
 		"phing/phing": "~2.15",
 		"phpunit/phpunit": "~4.8",
+		"phpstan/phpstan": "dev-master#4d6b7d8ad8",
 		"jakub-onderka/php-parallel-lint": "~0.9",
 		"phpdocumentor/reflection-docblock": "~2.0.4",
 		"satooshi/php-coveralls": "~1.0.1",
@@ -24,6 +25,11 @@
 	"autoload": {
 		"psr-4": {
 			"HelePartnerSyncApi\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"HelePartnerSyncApi\\": "tests/src/"
 		}
 	}
 }
