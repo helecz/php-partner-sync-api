@@ -13,6 +13,7 @@ class ErrorResponseTest extends PHPUnit_Framework_TestCase
 		$exception = new Exception(uniqid());
 		$response = new ErrorResponse('secret', $exception);
 
+		$this->assertSame($exception, $response->getException());
 		$this->assertSame($exception->getMessage(), $response->getMessage());
 		$this->assertSame(array(), $response->getData());
 		$this->assertFalse($response->isSuccessful());
