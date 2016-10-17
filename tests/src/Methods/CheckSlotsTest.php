@@ -4,9 +4,8 @@ namespace HelePartnerSyncApi\Methods;
 
 use DateTime;
 use LogicException;
-use PHPUnit_Framework_TestCase;
 
-class CheckSlotsTest extends PHPUnit_Framework_TestCase
+class CheckSlotsTest extends MethodTestCase
 {
 
 	public function testSuccess()
@@ -137,23 +136,6 @@ class CheckSlotsTest extends PHPUnit_Framework_TestCase
 		} catch (LogicException $e) {
 			$this->assertContains($error, $e->getMessage());
 		}
-	}
-
-	/**
-	 * @param mixed $dataToReturn
-	 * @return \HelePartnerSyncApi\Request
-	 */
-	private function getRequestMock($dataToReturn)
-	{
-		$request = $this->getMockBuilder('HelePartnerSyncApi\Request')
-			->disableOriginalConstructor()
-			->getMock();
-
-		$request->expects(self::once())
-			->method('getData')
-			->willReturn($dataToReturn);
-
-		return $request;
 	}
 
 }

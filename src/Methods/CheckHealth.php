@@ -7,8 +7,8 @@ class CheckHealth extends Method
 
 	public function __construct()
 	{
-		parent::__construct(function () {
-			return func_get_args();
+		parent::__construct(function ($data) {
+			return $data;
 		});
 	}
 
@@ -24,7 +24,7 @@ class CheckHealth extends Method
 	 * @param array $data
 	 * @return array
 	 */
-	public function parseResponseData($data)
+	protected function parseResponseData($data)
 	{
 		return $data;
 	}
@@ -33,9 +33,9 @@ class CheckHealth extends Method
 	 * @param array $data
 	 * @return array
 	 */
-	public function parseRequestData(array $data)
+	protected function parseRequestData($data)
 	{
-		return $data;
+		return array($data);
 	}
 
 }
