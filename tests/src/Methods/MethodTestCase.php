@@ -4,7 +4,7 @@ namespace HelePartnerSyncApi\Methods;
 
 use PHPUnit_Framework_TestCase;
 
-class MethodTestCase extends PHPUnit_Framework_TestCase
+abstract class MethodTestCase extends PHPUnit_Framework_TestCase
 {
 
 	/**

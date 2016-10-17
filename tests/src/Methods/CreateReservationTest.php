@@ -4,9 +4,8 @@ namespace HelePartnerSyncApi\Methods;
 
 use DateTime;
 use Exception;
-use PHPUnit_Framework_TestCase;
 
-class CreateReservationTest extends PHPUnit_Framework_TestCase
+class CreateReservationTest extends MethodTestCase
 {
 
 	public function testSuccess()
@@ -50,23 +49,6 @@ class CreateReservationTest extends PHPUnit_Framework_TestCase
 		} catch (Exception $e) {
 			$this->assertSame($exception, $e);
 		}
-	}
-
-	/**
-	 * @param mixed $dataToReturn
-	 * @return \HelePartnerSyncApi\Request
-	 */
-	private function getRequestMock($dataToReturn)
-	{
-		$request = $this->getMockBuilder('HelePartnerSyncApi\Request')
-			->disableOriginalConstructor()
-			->getMock();
-
-		$request->expects(self::once())
-			->method('getData')
-			->willReturn($dataToReturn);
-
-		return $request;
 	}
 
 }
