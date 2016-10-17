@@ -2,22 +2,25 @@
 
 namespace HelePartnerSyncApi\Responses;
 
+use Exception;
+use Throwable;
+
 class ErrorResponse extends Response
 {
 
 	/**
 	 * @var string
 	 */
-	private $message;
+	private $exception;
 
 	/**
 	 * @param string $secret
-	 * @param string $message
+	 * @param Exception|Throwable $exception
 	 */
-	public function __construct($secret, $message)
+	public function __construct($secret, $exception)
 	{
 		parent::__construct($secret);
-		$this->message = $message;
+		$this->exception = $exception;
 	}
 
 	/**
@@ -41,7 +44,15 @@ class ErrorResponse extends Response
 	 */
 	public function getMessage()
 	{
-		return $this->message;
+		return $this->exception->getMessage();
+	}
+
+	/**
+	 * @return Exception|Throwable
+	 */
+	public function getException()
+	{
+		return $this->exception;
 	}
 
 }

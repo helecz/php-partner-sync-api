@@ -2,6 +2,7 @@
 
 namespace HelePartnerSyncApi\Responses;
 
+use Exception;
 use PHPUnit_Framework_TestCase;
 
 class ErrorResponseTest extends PHPUnit_Framework_TestCase
@@ -9,10 +10,10 @@ class ErrorResponseTest extends PHPUnit_Framework_TestCase
 
 	public function test()
 	{
-		$message = 'message';
-		$response = new ErrorResponse('secret', $message);
+		$exception = new Exception(uniqid());
+		$response = new ErrorResponse('secret', $exception);
 
-		$this->assertSame($message, $response->getMessage());
+		$this->assertSame($exception->getMessage(), $response->getMessage());
 		$this->assertSame(array(), $response->getData());
 		$this->assertFalse($response->isSuccessful());
 	}

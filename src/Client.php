@@ -66,10 +66,10 @@ class Client
 			$responseData = $method->call($request);
 
 		} catch (Exception $e) {
-			return new ErrorResponse($this->secret, $e->getMessage());
+			return new ErrorResponse($this->secret, $e);
 
 		} catch (Throwable $e) {
-			return new ErrorResponse($this->secret, $e->getMessage());
+			return new ErrorResponse($this->secret, $e);
 		}
 
 		return new SuccessResponse(
