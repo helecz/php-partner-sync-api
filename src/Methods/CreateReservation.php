@@ -19,7 +19,7 @@ class CreateReservation extends Method
 	 * @param array $data
 	 * @return array
 	 */
-	public function parseResponseData($data)
+	protected function parseResponseData($data)
 	{
 		return array();
 	}
@@ -28,7 +28,7 @@ class CreateReservation extends Method
 	 * @param array $data
 	 * @return array
 	 */
-	public function parseRequestData(array $data)
+	protected function parseRequestData($data)
 	{
 		return array(
 			DateTime::createFromFormat(DateTime::W3C, $data['startDateTime']),

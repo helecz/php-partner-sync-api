@@ -3,6 +3,7 @@
 namespace HelePartnerSyncApi\Methods;
 
 use Closure;
+use HelePartnerSyncApi\Request;
 
 abstract class Method
 {
@@ -21,11 +22,15 @@ abstract class Method
 	}
 
 	/**
-	 * @return Closure|null
+	 * @param Request $request
+	 * @return array
 	 */
-	public function getCallback()
+	public function call(Request $request)
 	{
-		return $this->callback;
+		return $this->parseResponseData(call_user_func_array(
+			$this->callback,
+			$this->parseRequestData($request->getData())
+		));
 	}
 
 	/**
@@ -37,12 +42,12 @@ abstract class Method
 	 * @param array $data
 	 * @return array
 	 */
-	abstract public function parseResponseData($data);
+	abstract protected function parseResponseData($data);
 
 	/**
 	 * @param array $data
 	 * @return array
 	 */
-	abstract public function parseRequestData(array $data);
+	abstract protected function parseRequestData($data);
 
 }

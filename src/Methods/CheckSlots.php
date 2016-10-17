@@ -21,24 +21,23 @@ class CheckSlots extends Method
 	 * @param array $data
 	 * @return array
 	 */
-	public function parseResponseData($data)
+	protected function parseResponseData($data)
 	{
-		if (!is_array($data)) {
-			throw new LogicException('Expected array to be returned from method ' . $this->getName());
-		}
+		$this->checkArray($data);
 
 		$result = array();
 
 		foreach ($data as $slot) {
+			$this->checkArray($slot);
 			$this->checkExistence($slot, array('startDateTime', 'endDateTime', 'capacity'));
 			$this->checkDateTime($slot, 'startDateTime');
 			$this->checkDateTime($slot, 'endDateTime');
 			$this->checkInt($slot, 'capacity');
 
 			$result[] = array(
-				$slot['startDateTime']->format(DateTime::W3C),
-				$slot['endDateTime']->format(DateTime::W3C),
-				$slot['capacity']
+				'startDateTime' => $slot['startDateTime']->format(DateTime::W3C),
+				'endDateTime' => $slot['endDateTime']->format(DateTime::W3C),
+				'capacity' => $slot['capacity']
 			);
 		}
 
@@ -49,12 +48,22 @@ class CheckSlots extends Method
 	 * @param array $data
 	 * @return array
 	 */
-	public function parseRequestData(array $data)
+	protected function parseRequestData($data)
 	{
+		$this->checkArray($data);
+		$this->checkExistence($data, array('date', 'parameters'));
+
 		return array(
 			new DateTime($data['date']),
 			$data['parameters'],
 		);
+	}
+
+	private function checkArray($data)
+	{
+		if (!is_array($data)) {
+			throw new LogicException('Expected array, got ' . $this->getType($data));
+		}
 	}
 
 	/**
@@ -67,6 +76,11 @@ class CheckSlots extends Method
 			if (!isset($data[$field])) {
 				throw new LogicException(sprintf('Missing "%s" field in response of %s method', $field, $this->getName()));
 			}
+			unset($data[$field]);
+		}
+
+		if (count($data) > 0) {
+			throw new LogicException(sprintf('Unexpected fields: %s', implode(', ', array_keys($data))));
 		}
 	}
 

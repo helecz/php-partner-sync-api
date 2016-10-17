@@ -53,10 +53,7 @@ class Client
 
 			$method = $this->getMethod($request->getMethod());
 
-			$responseData = call_user_func_array(
-				$method->getCallback(),
-				$method->parseRequestData($request->getData())
-			);
+			$responseData = $method->call($request);
 
 		} catch (Exception $e) {
 			return new ErrorResponse($this->secret, $e->getMessage());
@@ -67,7 +64,7 @@ class Client
 
 		return new SuccessResponse(
 			$this->secret,
-			$method->parseResponseData($responseData)
+			$responseData
 		);
 	}
 
