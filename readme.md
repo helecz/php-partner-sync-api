@@ -22,6 +22,9 @@ $app->onCheckSlots(function (\DateTime $date, array $parameters) {
 $app->onCreateReservation(function (\DateTime $startDateTime, \DateTime $endDateTime, $quantity, array $parameters) {
     // $this->reservationFacade->createReservation(...);
 });
+$app->onCancelReservation(function (\DateTime $startDateTime, \DateTime $endDateTime, $quantity, array $parameters) {
+    // $this->reservationFacade->cancelReservation(...);
+});
 $app->run();
 ```
 

@@ -6,7 +6,7 @@ use DateTime;
 use HelePartnerSyncApi\Validator;
 use HelePartnerSyncApi\ValidatorException;
 
-class CreateReservation extends Method
+class CancelReservation extends Method
 {
 
 	/**
@@ -14,7 +14,7 @@ class CreateReservation extends Method
 	 */
 	public function getName()
 	{
-		return 'createReservation';
+		return 'cancelReservation';
 	}
 
 	/**

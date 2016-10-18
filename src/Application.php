@@ -3,6 +3,7 @@
 namespace HelePartnerSyncApi;
 
 use Closure;
+use HelePartnerSyncApi\Method\CancelReservation;
 use HelePartnerSyncApi\Method\CheckHealth;
 use HelePartnerSyncApi\Method\CheckSlots;
 use HelePartnerSyncApi\Method\CreateReservation;
@@ -39,6 +40,14 @@ class Application
 	public function onCreateReservation(Closure $callback)
 	{
 		$this->client->registerMethod(new CreateReservation($callback));
+	}
+
+	/**
+	 * @param Closure $callback function (DateTime $startDateTime, DateTime $endDateTime, int $quantity, array $parameters)
+	 */
+	public function onCancelReservation(Closure $callback)
+	{
+		$this->client->registerMethod(new CancelReservation($callback));
 	}
 
 	public function run()
