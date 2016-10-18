@@ -77,13 +77,13 @@ class CreateReservationTest extends MethodTestCase
 		);
 		$this->checkException(
 			array(
-				'startDateTime' => 1,
+				'startDateTime' => '1',
 				'endDateTime' => $endDateTime->format(DateTime::W3C),
 				'quantity' => 1,
 				'parameters' => array(),
 			),
 			null,
-			'DateTime expected, integer (1) given.'
+			'W3C datetime expected, string (1) given.'
 		);
 		$this->checkException(
 			array(

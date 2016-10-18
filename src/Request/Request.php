@@ -28,7 +28,15 @@ class Request
 	{
 		$data = json_decode($jsonData, true);
 		if (!is_array($data)) {
-			throw new RequestException('Invalid JSON in HTTP request body');
+			throw new RequestException('Invalid JSON in request.');
+		}
+
+		if (!in_array($signatureAlgorithm, hash_algos(), true)) {
+			throw new RequestException(sprintf('Unknown signature algorithm (%s) in request.', $signatureAlgorithm));
+		}
+
+		if (hash_hmac($signatureAlgorithm, $jsonData, $secret) !== $signature) {
+			throw new RequestException('Signature in request is invalid: ' . hash_hmac($signatureAlgorithm, $jsonData, $secret));
 		}
 
 		try {
@@ -39,19 +47,7 @@ class Request
 			));
 
 		} catch (ValidatorException $e) {
-			throw new RequestException('Invalid Http request: ' . $e->getMessage(), $e);
-		}
-
-		if (!in_array($signatureAlgorithm, hash_algos(), true)) {
-			throw new RequestException(sprintf(
-				'Unknown signature algorithm `%s` in HTTP Request. Supported algorithms: %s',
-				$signatureAlgorithm,
-				implode(', ', hash_algos())
-			));
-		}
-
-		if (hash_hmac($signatureAlgorithm, $jsonData, $secret) !== $signature) {
-			throw new RequestException('Signature in HTTP Request is invalid!');
+			throw new RequestException('Invalid request: ' . $e->getMessage(), $e);
 		}
 
 		$this->data = $data['data'];

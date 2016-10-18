@@ -55,7 +55,7 @@ class CheckSlotsTest extends MethodTestCase
 			array(
 				array(),
 			),
-			'DateTime expected, string (now) given.'
+			'W3C datetime expected, string (now) given.'
 		);
 		$this->checkException(
 			array(

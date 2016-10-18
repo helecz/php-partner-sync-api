@@ -31,26 +31,26 @@ class RequestTest extends PHPUnit_Framework_TestCase
 			array(
 				'',
 				'',
-				'',
-				'Invalid JSON in HTTP request body',
+				'md5',
+				'Invalid JSON in request',
 			),
 			array(
 				'{}',
-				'',
-				'',
-				'Invalid Http request: Missing keys',
+				'9b9585ab4f87eff122c8cd8e6fd94d358ed56f22',
+				'sha1',
+				'Invalid request: Missing keys',
 			),
 			array(
 				'{"data":[], "method": "foo", "expectedVersion": "1.0.0"}',
 				'abc',
 				'fooAlgo',
-				'Unknown signature algorithm `fooAlgo` in HTTP Request',
+				'Unknown signature algorithm (fooAlgo) in request',
 			),
 			array(
 				'{"data":[], "method": "foo", "expectedVersion": "1.0.0"}',
 				'abc',
 				'sha1',
-				'Signature in HTTP Request is invalid!',
+				'Signature in request is invalid',
 			),
 		);
 	}

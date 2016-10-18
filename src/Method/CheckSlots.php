@@ -44,6 +44,8 @@ class CheckSlots extends Method
 	 */
 	protected function parseResponseData($data)
 	{
+		$exceptionPrefix = 'Bad method output: ';
+
 		try {
 			Validator::checkStructure($data, array(
 				array(
@@ -53,16 +55,33 @@ class CheckSlots extends Method
 				),
 			));
 		} catch (ValidatorException $e) {
-			throw new MethodException('Bad method output: ' . $e->getMessage(), $e);
+			throw new MethodException($exceptionPrefix . $e->getMessage(), $e);
 		}
 
-		return array_map(function ($slot) {
-			return array(
-				'startDateTime' => $slot['startDateTime']->format(DateTime::W3C),
-				'endDateTime' => $slot['endDateTime']->format(DateTime::W3C),
-				'capacity' => $slot['capacity'],
+		$result = array();
+
+		foreach ($data as $index => $slot) {
+			$whichSlot = sprintf('(slot #%d)', $index + 1);
+			$startDateTime = $slot['startDateTime']->format(DateTime::W3C);
+			$endDateTime = $slot['endDateTime']->format(DateTime::W3C);
+			$capacity = $slot['capacity'];
+
+			if ($startDateTime >= $endDateTime) {
+				throw new MethodException(sprintf('%sSlot startDateTime (%s) must be before endDateTime (%s) %s', $exceptionPrefix, $startDateTime, $endDateTime, $whichSlot));
+			}
+
+			if ($capacity < 0) {
+				throw new MethodException(sprintf('%sSlot capacity (%s) must be non-negative %s', $exceptionPrefix, $capacity, $whichSlot));
+			}
+
+			$result[] = array(
+				'startDateTime' => $startDateTime,
+				'endDateTime' => $endDateTime,
+				'capacity' => $capacity,
 			);
-		}, $data);
+		}
+
+		return $result;
 	}
 
 }
