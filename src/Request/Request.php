@@ -36,7 +36,7 @@ class Request
 		}
 
 		if (hash_hmac($signatureAlgorithm, $jsonData, $secret) !== $signature) {
-			throw new RequestException('Signature in request is invalid: ' . hash_hmac($signatureAlgorithm, $jsonData, $secret));
+			throw new RequestException('Signature in request is invalid.');
 		}
 
 		try {
