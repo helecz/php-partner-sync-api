@@ -4,7 +4,6 @@ namespace HelePartnerSyncApi\Method;
 
 use DateTime;
 use Exception;
-use HelePartnerSyncApi\ValidatorException;
 
 class CreateReservationTest extends MethodTestCase
 {
@@ -123,7 +122,7 @@ class CreateReservationTest extends MethodTestCase
 			$method->call($request);
 			$this->fail('Expected exception to be thrown');
 
-		} catch (ValidatorException $e) {
+		} catch (MethodException $e) {
 			$this->assertContains($error, $e->getMessage());
 		}
 	}

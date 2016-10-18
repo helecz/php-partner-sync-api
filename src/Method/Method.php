@@ -39,15 +39,15 @@ abstract class Method
 	abstract public function getName();
 
 	/**
-	 * @param mixed $data
-	 * @return mixed
-	 */
-	abstract protected function parseResponseData($data);
-
-	/**
 	 * @param array $data
 	 * @return array
 	 */
 	abstract protected function parseRequestData($data);
+
+	/**
+	 * @param mixed $data
+	 * @return mixed
+	 */
+	abstract protected function parseResponseData($data);
 
 }

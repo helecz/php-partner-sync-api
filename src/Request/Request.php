@@ -2,7 +2,8 @@
 
 namespace HelePartnerSyncApi\Request;
 
-use HelePartnerSyncApi\Client;
+use HelePartnerSyncApi\Validator;
+use HelePartnerSyncApi\ValidatorException;
 
 class Request
 {
@@ -26,25 +27,19 @@ class Request
 	public function __construct($jsonData, $secret, $signature, $signatureAlgorithm)
 	{
 		$data = json_decode($jsonData, true);
-
 		if (!is_array($data)) {
 			throw new RequestException('Invalid JSON in HTTP request body');
 		}
 
-		if (!isset($data['data'])) {
-			throw new RequestException('Missing data field in HTTP request body');
-		}
+		try {
+			Validator::checkStructure($data, array(
+				'expectedVersion' => Validator::TYPE_STRING,
+				'method' => Validator::TYPE_STRING,
+				'data' => Validator::TYPE_ARRAY,
+			));
 
-		if (!isset($data['method'])) {
-			throw new RequestException('Missing method field in HTTP request body');
-		}
-
-		if (!isset($data['expectedVersion'])) {
-			throw new RequestException('Missing expectedVersion field in HTTP request body');
-		}
-
-		if ($data['expectedVersion'] !== Client::VERSION) {
-			throw new RequestException(sprintf('Request expected version %s, but client is %s', $data['expectedVersion'], Client::VERSION));
+		} catch (ValidatorException $e) {
+			throw new RequestException('Invalid Http request: ' . $e->getMessage(), $e);
 		}
 
 		if (!in_array($signatureAlgorithm, hash_algos(), true)) {
