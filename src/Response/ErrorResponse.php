@@ -25,11 +25,11 @@ class ErrorResponse extends Response
 	}
 
 	/**
-	 * @return null
+	 * @return array
 	 */
 	public function getData()
 	{
-		return null;
+		return array();
 	}
 
 	/**

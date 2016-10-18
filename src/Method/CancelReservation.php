@@ -44,7 +44,7 @@ class CancelReservation extends Method
 
 	/**
 	 * @param mixed $data
-	 * @return null
+	 * @return array
 	 */
 	protected function parseResponseData($data)
 	{
@@ -54,7 +54,7 @@ class CancelReservation extends Method
 			throw new MethodException('Bad method output: ' . $e->getMessage(), $e);
 		}
 
-		return null;
+		return array();
 	}
 
 }

@@ -16,7 +16,9 @@ class CheckHealthTest extends MethodTestCase
 		$method = new CheckHealth();
 		$response = $method->call($request);
 
-		$this->assertSame($data, $response);
+		$this->assertSame(array(
+			'requestData' => $data,
+		), $response);
 	}
 
 }

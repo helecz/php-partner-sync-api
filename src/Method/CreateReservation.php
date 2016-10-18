@@ -54,7 +54,7 @@ class CreateReservation extends Method
 			throw new MethodException('Bad method output: ' . $e->getMessage(), $e);
 		}
 
-		return null;
+		return array();
 	}
 
 }

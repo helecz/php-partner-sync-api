@@ -34,7 +34,7 @@ abstract class Response
 	}
 
 	/**
-	 * @return mixed
+	 * @return array
 	 */
 	abstract public function getData();
 

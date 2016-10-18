@@ -24,7 +24,7 @@ class CreateReservationTest extends MethodTestCase
 		});
 		$response = $method->call($request);
 
-		$this->assertNull($response);
+		$this->assertSame(array(), $response);
 	}
 
 	public function testFailure()

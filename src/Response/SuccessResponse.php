@@ -2,26 +2,30 @@
 
 namespace HelePartnerSyncApi\Response;
 
+use HelePartnerSyncApi\Validator;
+
 class SuccessResponse extends Response
 {
 
 	/**
-	 * @var mixed
+	 * @var array
 	 */
 	private $data;
 
 	/**
 	 * @param string $secret
-	 * @param mixed $data
+	 * @param array $data
 	 */
 	public function __construct($secret, $data)
 	{
+		Validator::checkArray($data);
+
 		parent::__construct($secret);
 		$this->data = $data;
 	}
 
 	/**
-	 * @return mixed
+	 * @return array
 	 */
 	public function getData()
 	{
