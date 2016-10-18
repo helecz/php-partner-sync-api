@@ -64,7 +64,7 @@ class CreateReservationTest extends MethodTestCase
 		$this->checkException(
 			array(),
 			null,
-			'Missing keys in data: `startDateTime, endDateTime, quantity, parameters`'
+			'Missing keys (startDateTime, endDateTime, quantity, parameters)'
 		);
 		$this->checkException(
 			array(

@@ -46,7 +46,7 @@ class CheckSlotsTest extends MethodTestCase
 		$this->checkException(
 			array(),
 			array(),
-			'Missing keys in data: `date, parameters`'
+			'Missing keys (date, parameters)'
 		);
 		$this->checkException(
 			array(
@@ -68,7 +68,7 @@ class CheckSlotsTest extends MethodTestCase
 					'startDateTime' => new DateTime(),
 				)
 			),
-			'Missing keys in data: `endDateTime, capacity`'
+			'Missing keys (endDateTime, capacity)'
 		);
 		$this->checkException(
 			array(

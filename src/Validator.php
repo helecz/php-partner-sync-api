@@ -16,78 +16,81 @@ class Validator
 	const TYPE_DATE_TIME = 'datetime';
 	const TYPE_DATE_TIME_STRING = 'datetimestring';
 
-	private static function getCheckers()
+	/**
+	 * @param mixed $value
+	 * @param string $type self::TYPE_*
+	 */
+	public static function checkType($value, $type)
 	{
-		$that = new self();
+		switch ($type) {
+			case self::TYPE_NULL:
+				self::checkNull($value);
+				break;
 
-		static $checkers = array();
+			case self::TYPE_ARRAY:
+				self::checkArray($value);
+				break;
 
-		$checkers = array(
-			self::TYPE_NULL => function ($value) use ($that) {
-				$that::checkNull($value);
-			},
-			self::TYPE_ARRAY => function ($value) use ($that) {
-				$that::checkArray($value);
-			},
-			self::TYPE_INT => function ($value) use ($that) {
-				$that::checkInt($value);
-			},
-			self::TYPE_STRING => function ($value) use ($that) {
-				$that::checkString($value);
-			},
-			self::TYPE_DATE_TIME => function ($value) use ($that) {
-				$that::checkDateTime($value);
-			},
-			self::TYPE_DATE_TIME_STRING => function ($value) use ($that) {
-				$that::checkDateTimeString($value);
-			},
-		);
+			case self::TYPE_INT:
+				self::checkInt($value);
+				break;
 
-		return $checkers;
+			case self::TYPE_STRING:
+				self::checkString($value);
+				break;
+
+			case self::TYPE_DATE_TIME:
+				self::checkDateTime($value);
+				break;
+
+			case self::TYPE_DATE_TIME_STRING:
+				self::checkDateTimeString($value);
+				break;
+
+			default:
+				throw new LogicException(sprintf('Unknown type %s to validate', $type));
+		}
 	}
 
-	public static function checkStructure($value, $type)
+	public static function checkStructure($data, array $structure, array $path = array())
 	{
-		$checkers = self::getCheckers();
-
-		if (is_array($type)) {
-			self::checkArray($value);
-			self::checkArrayStructure($value, $type);
-			return;
+		if (count($structure) === 0) {
+			throw new LogicException(sprintf('Cannot validate against empty structure in %s', self::getStructurePath($path)));
 		}
 
-		if (!array_key_exists($type, $checkers)) {
-			throw new LogicException(sprintf('Unknown type `%s`', $type));
-		}
-
-		$checker = $checkers[$type];
-		$checker($value);
-	}
-
-	private static function checkArrayStructure($data, $structure)
-	{
 		self::checkArray($data);
 		self::checkArray($structure);
 
-		$listStructure = self::isList($structure);
-		if (!$listStructure) {
+		$listCheck = self::isList($structure);
+		if (!$listCheck) {
 			if (count($data) > 0 && self::isList($data)) {
-				throw new LogicException('Nested data must not be list');
+				throw new LogicException(sprintf('Unexpected list structure (%s elements found) in %s', count($data), self::getStructurePath($path)));
 			}
 
 			$diff = array_diff_key($data, $structure);
 			if (count($diff) > 0) {
-				throw new LogicException(sprintf('Unknown data keys: `%s`', implode(', ', array_keys($diff))));
+				throw new LogicException(sprintf('Unknown keys (%s) in %s', implode(', ', array_keys($diff)), self::getStructurePath($path)));
 			}
 
 			$diff = array_diff_key($structure, $data);
 			if (count($diff) > 0) {
-				throw new LogicException(sprintf('Missing keys in data: `%s`', implode(', ', array_keys($diff))));
+				throw new LogicException(sprintf('Missing keys (%s) in %s', implode(', ', array_keys($diff)), self::getStructurePath($path)));
 			}
 		}
 
 		foreach ($data as $key => $value) {
-			self::checkStructure($value, $listStructure ? $structure[0] : $structure[$key]);
+			$newStructure = $listCheck ? $structure[0] : $structure[$key];
+
+			if (is_array($value) && is_array($newStructure)) {
+				$path[] = $key;
+				self::checkStructure($value, $newStructure, $path);
+			} else {
+				try {
+					self::checkType($value, $newStructure);
+				} catch (LogicException $e) {
+					throw new LogicException(sprintf('Invalid type in %s: %s', self::getStructurePath($path, $key), $e->getMessage()), 0, $e);
+				}
+			}
 		}
 	}
 
@@ -186,6 +189,19 @@ class Validator
 	private static function isList($value)
 	{
 		return is_array($value) && (count($value) === 0 || array_keys($value) === range(0, count($value) - 1));
+	}
+
+	/**
+	 * @param array $path
+	 * @param string|null $currentKey
+	 * @return string
+	 */
+	private static function getStructurePath(array $path, $currentKey = null)
+	{
+		if ($currentKey !== null) {
+			$path[] = $currentKey;
+		}
+		return sprintf('[%s]', implode('][', $path));
 	}
 
 }

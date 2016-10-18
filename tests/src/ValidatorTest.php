@@ -2,22 +2,33 @@
 
 namespace HelePartnerSyncApi;
 
+use DateTime;
 use PHPUnit_Framework_TestCase;
 use stdClass;
 
 class ValidatorTest extends PHPUnit_Framework_TestCase
 {
 
-	public function testNull()
+	public function testValidExamples()
 	{
+		$now = new DateTime();
 		Validator::checkNull(null);
+		Validator::checkString('true');
+		Validator::checkString('0');
+		Validator::checkString('1.9');
+		Validator::checkString('array');
+		Validator::checkInt(121);
+		Validator::checkInt(-78);
+		Validator::checkInt(0);
+		Validator::checkDateTime($now);
+		Validator::checkDateTimeString($now->format(DATE_W3C));
 		$this->assertTrue(true);
 	}
 
 	/**
 	 * @return mixed[][]
 	 */
-	public function invalidNulls()
+	public function provideInvalidNulls()
 	{
 		return array(
 			array(true),
@@ -31,11 +42,11 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
 	/**
 	 * @param mixed $value
 	 *
-	 * @dataProvider invalidNulls
+	 * @dataProvider provideInvalidNulls
 	 * @expectedException \LogicException
 	 * @expectedExceptionMessage Null expected
 	 */
-	public function testCheckNullThrowsExceptionForInvalidNulls($value)
+	public function testCheckInvalidNulls($value)
 	{
 		Validator::checkNull($value);
 	}
@@ -43,7 +54,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
 	/**
 	 * @return mixed[][]
 	 */
-	public function invalidStrings()
+	public function provideInvalidStrings()
 	{
 		return array(
 			array(true),
@@ -55,36 +66,13 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @return mixed[][]
-	 */
-	public function validStrings()
-	{
-		return array(
-			array('sfdsfsdfsd'),
-			array('444545'),
-			array('true'),
-		);
-	}
-
-	/**
 	 * @param mixed $value
 	 *
-	 * @dataProvider validStrings
-	 */
-	public function testCheckString($value)
-	{
-		Validator::checkString($value);
-		$this->assertTrue(true);
-	}
-
-	/**
-	 * @param mixed $value
-	 *
-	 * @dataProvider invalidStrings
+	 * @dataProvider provideInvalidStrings
 	 * @expectedException \LogicException
 	 * @expectedExceptionMessage String expected
 	 */
-	public function testCheckStringThrowsExceptionForInvalidStrings($value)
+	public function testCheckInvalidStrings($value)
 	{
 		Validator::checkString($value);
 	}
@@ -92,7 +80,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
 	/**
 	 * @return mixed[][]
 	 */
-	public function invalidInts()
+	public function provideInvalidInts()
 	{
 		return array(
 			array('1212'),
@@ -105,40 +93,18 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @return mixed[][]
-	 */
-	public function validInts()
-	{
-		return array(
-			array(12122),
-			array(-7878787),
-		);
-	}
-
-	/**
 	 * @param mixed $value
 	 *
-	 * @dataProvider validInts
-	 */
-	public function testCheckInt($value)
-	{
-		Validator::checkInt($value);
-		$this->assertTrue(true);
-	}
-
-	/**
-	 * @param mixed $value
-	 *
-	 * @dataProvider invalidInts
+	 * @dataProvider provideInvalidInts
 	 * @expectedException \LogicException
 	 * @expectedExceptionMessage Int expected
 	 */
-	public function testCheckIntegerThrowsExceptionForInvalidIntegers($value)
+	public function testCheckInvalidIntegers($value)
 	{
 		Validator::checkInt($value);
 	}
 
-	public function testSuccess()
+	public function testCheckValidStructures()
 	{
 		Validator::checkStructure(array(
 			'key' => 123,
@@ -169,6 +135,64 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
 		));
 
 		$this->assertTrue(true);
+	}
+
+	/**
+	 * @expectedException \LogicException
+	 * @expectedExceptionMessage Invalid type in [foo]: Int expected, array given.
+	 */
+	public function testCheckInvalidStructuresBasic()
+	{
+		Validator::checkStructure(array(
+			'moo' => 0,
+			'foo' => array(),
+		), array(
+			'moo' => Validator::TYPE_INT,
+			'foo' => Validator::TYPE_INT,
+		));
+	}
+
+	/**
+	 * @expectedException \LogicException
+	 * @expectedExceptionMessage Invalid type in [foo][bar]: Int expected, string (moo) given.
+	 */
+	public function testCheckInvalidStructuresDeep()
+	{
+		Validator::checkStructure(array(
+			'foo' => array(
+				'bar' => 'moo',
+			),
+		), array(
+			'foo' => array(
+				'bar' => Validator::TYPE_INT,
+			),
+		));
+	}
+
+	/**
+	 * @expectedException \LogicException
+	 * @expectedExceptionMessage Missing keys (bar, foo) in []
+	 */
+	public function testCheckInvalidStructuresMissingKeys()
+	{
+		Validator::checkStructure(array(), array(
+			'bar' => Validator::TYPE_INT,
+			'foo' => Validator::TYPE_INT,
+		));
+	}
+
+	/**
+	 * @expectedException \LogicException
+	 * @expectedExceptionMessage Unknown keys (foo, bar) in []
+	 */
+	public function testCheckInvalidStructuresUnknownKeys()
+	{
+		Validator::checkStructure(array(
+			'foo' => 'foo',
+			'bar' => 'bar',
+		), array(
+			'moo' => Validator::TYPE_INT,
+		));
 	}
 
 }

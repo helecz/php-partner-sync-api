@@ -22,7 +22,7 @@ class CreateReservation extends Method
 	 */
 	protected function parseResponseData($data)
 	{
-		Validator::checkStructure($data, Validator::TYPE_NULL);
+		Validator::checkNull($data);
 
 		return null;
 	}
