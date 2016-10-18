@@ -75,6 +75,9 @@ class Validator
 			if (count($diff) > 0) {
 				throw new ValidatorException(sprintf('Missing keys (%s) in %s', implode(', ', array_keys($diff)), self::getStructurePath($path)));
 			}
+
+		} elseif (count($data) > 0 && !self::isList($data)) {
+			throw new ValidatorException(sprintf('Expected list structure in %s', self::getStructurePath($path)));
 		}
 
 		foreach ($data as $key => $value) {

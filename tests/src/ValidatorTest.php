@@ -106,6 +106,8 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
 
 	public function testCheckValidStructures()
 	{
+		Validator::checkStructure(array(-1, 0, 1), array(Validator::TYPE_INT));
+
 		Validator::checkStructure(array(
 			'key' => 123,
 			'data' => array(
@@ -150,6 +152,24 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
 			'moo' => Validator::TYPE_INT,
 			'foo' => Validator::TYPE_INT,
 		));
+	}
+
+	/**
+	 * @expectedException \HelePartnerSyncApi\ValidatorException
+	 * @expectedExceptionMessage Expected list structure in root
+	 */
+	public function testCheckInvalidStructureNotAList()
+	{
+		Validator::checkStructure(array(1, 2, 'key' => 'not-a-list'), array(Validator::TYPE_INT));
+	}
+
+	/**
+	 * @expectedException \HelePartnerSyncApi\ValidatorException
+	 * @expectedExceptionMessage Invalid type in key '2': Int expected, string (3) given.
+	 */
+	public function testCheckInvalidStructureListElement()
+	{
+		Validator::checkStructure(array(1, 2, '3'), array(Validator::TYPE_INT));
 	}
 
 	/**
