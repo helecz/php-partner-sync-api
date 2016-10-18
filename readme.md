@@ -9,7 +9,7 @@ Minimal supported version of PHP is 5.3.
 The best way to install this library is using [Composer](http://getcomposer.org/):
 
 ```
-> composer require hele/php-partner-sync-api
+> composer require hele/partner-sync-api
 ```
 
 ## Simple usage
@@ -29,7 +29,7 @@ $app->run();
 ```
 
 If reservation cannot be created for some reason, you can throw any Exception and the reservation on Hele website will not be performed.
-The `$parameters` argument may contain custom data needed by your application (e.g. some `serviceId` identifying service in your application).
+The `$parameters` argument may contain custom data needed by your application (e.g. some `serviceId` identifying service in your application) - if you need so, contact us.
 
 Callback in `onCheckSlots` must return array of arrays in following format:
 
