@@ -81,8 +81,8 @@ class Validator
 			$newStructure = $listCheck ? $structure[0] : $structure[$key];
 
 			if (is_array($value) && is_array($newStructure)) {
-				$path[] = $key;
-				self::checkStructure($value, $newStructure, $path);
+				$newPath = array_merge($path, array($key));
+				self::checkStructure($value, $newStructure, $newPath);
 			} else {
 				try {
 					self::checkType($value, $newStructure);
@@ -128,13 +128,11 @@ class Validator
 	 */
 	public static function checkDateTimeString($value)
 	{
-		if (!is_string($value)) {
-			self::throwException('DateTime', $value);
-		}
+		self::checkString($value);
 
 		$dateTime = DateTime::createFromFormat(DateTime::W3C, $value);
 		if ($dateTime === false) {
-			self::throwException('DateTime', $value);
+			self::throwException('W3C datetime', $value);
 		}
 	}
 
@@ -200,7 +198,14 @@ class Validator
 		if ($currentKey !== null) {
 			$path[] = $currentKey;
 		}
-		return sprintf('[%s]', implode('][', $path));
+
+		if (count($path) === 0) {
+			return 'root';
+		} elseif (count($path) === 1) {
+			return sprintf('key \'%s\'', $path[0]);
+		} else {
+			return sprintf('path \'%s\'', implode('.', $path));
+		}
 	}
 
 }

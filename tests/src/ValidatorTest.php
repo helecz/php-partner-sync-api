@@ -139,7 +139,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * @expectedException \HelePartnerSyncApi\ValidatorException
-	 * @expectedExceptionMessage Invalid type in [foo]: Int expected, array given.
+	 * @expectedExceptionMessage Invalid type in key 'foo': Int expected, array given.
 	 */
 	public function testCheckInvalidStructuresBasic()
 	{
@@ -154,15 +154,17 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * @expectedException \HelePartnerSyncApi\ValidatorException
-	 * @expectedExceptionMessage Invalid type in [foo][bar]: Int expected, string (moo) given.
+	 * @expectedExceptionMessage Invalid type in path 'foo.bar': Int expected, string (moo) given.
 	 */
 	public function testCheckInvalidStructuresDeep()
 	{
 		Validator::checkStructure(array(
+			'boo' => null,
 			'foo' => array(
 				'bar' => 'moo',
 			),
 		), array(
+			'boo' => Validator::TYPE_NULL,
 			'foo' => array(
 				'bar' => Validator::TYPE_INT,
 			),
@@ -171,7 +173,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * @expectedException \HelePartnerSyncApi\ValidatorException
-	 * @expectedExceptionMessage Missing keys (bar, foo) in []
+	 * @expectedExceptionMessage Missing keys (bar, foo) in root
 	 */
 	public function testCheckInvalidStructuresMissingKeys()
 	{
@@ -183,7 +185,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * @expectedException \HelePartnerSyncApi\ValidatorException
-	 * @expectedExceptionMessage Unknown keys (foo, bar) in []
+	 * @expectedExceptionMessage Unknown keys (foo, bar) in root
 	 */
 	public function testCheckInvalidStructuresUnknownKeys()
 	{
