@@ -3,7 +3,7 @@
 namespace HelePartnerSyncApi\Method;
 
 use DateTime;
-use LogicException;
+use HelePartnerSyncApi\ValidatorException;
 
 class CheckSlotsTest extends MethodTestCase
 {
@@ -115,7 +115,7 @@ class CheckSlotsTest extends MethodTestCase
 			$method->call($request);
 			$this->fail('Expected exception to be thrown');
 
-		} catch (LogicException $e) {
+		} catch (ValidatorException $e) {
 			$this->assertContains($error, $e->getMessage());
 		}
 	}

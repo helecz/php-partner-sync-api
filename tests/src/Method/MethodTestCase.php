@@ -2,6 +2,7 @@
 
 namespace HelePartnerSyncApi\Method;
 
+use HelePartnerSyncApi\Request\Request;
 use PHPUnit_Framework_TestCase;
 
 abstract class MethodTestCase extends PHPUnit_Framework_TestCase
@@ -9,7 +10,7 @@ abstract class MethodTestCase extends PHPUnit_Framework_TestCase
 
 	/**
 	 * @param mixed $dataToReturn
-	 * @return \HelePartnerSyncApi\Request
+	 * @return Request
 	 */
 	protected function getRequestMock($dataToReturn)
 	{

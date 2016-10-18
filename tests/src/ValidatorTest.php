@@ -43,7 +43,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
 	 * @param mixed $value
 	 *
 	 * @dataProvider provideInvalidNulls
-	 * @expectedException \LogicException
+	 * @expectedException \HelePartnerSyncApi\ValidatorException
 	 * @expectedExceptionMessage Null expected
 	 */
 	public function testCheckInvalidNulls($value)
@@ -69,7 +69,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
 	 * @param mixed $value
 	 *
 	 * @dataProvider provideInvalidStrings
-	 * @expectedException \LogicException
+	 * @expectedException \HelePartnerSyncApi\ValidatorException
 	 * @expectedExceptionMessage String expected
 	 */
 	public function testCheckInvalidStrings($value)
@@ -96,7 +96,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
 	 * @param mixed $value
 	 *
 	 * @dataProvider provideInvalidInts
-	 * @expectedException \LogicException
+	 * @expectedException \HelePartnerSyncApi\ValidatorException
 	 * @expectedExceptionMessage Int expected
 	 */
 	public function testCheckInvalidIntegers($value)
@@ -138,7 +138,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException \LogicException
+	 * @expectedException \HelePartnerSyncApi\ValidatorException
 	 * @expectedExceptionMessage Invalid type in [foo]: Int expected, array given.
 	 */
 	public function testCheckInvalidStructuresBasic()
@@ -153,7 +153,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException \LogicException
+	 * @expectedException \HelePartnerSyncApi\ValidatorException
 	 * @expectedExceptionMessage Invalid type in [foo][bar]: Int expected, string (moo) given.
 	 */
 	public function testCheckInvalidStructuresDeep()
@@ -170,7 +170,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException \LogicException
+	 * @expectedException \HelePartnerSyncApi\ValidatorException
 	 * @expectedExceptionMessage Missing keys (bar, foo) in []
 	 */
 	public function testCheckInvalidStructuresMissingKeys()
@@ -182,7 +182,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException \LogicException
+	 * @expectedException \HelePartnerSyncApi\ValidatorException
 	 * @expectedExceptionMessage Unknown keys (foo, bar) in []
 	 */
 	public function testCheckInvalidStructuresUnknownKeys()

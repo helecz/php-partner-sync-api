@@ -4,7 +4,6 @@ namespace HelePartnerSyncApi;
 
 use DateTime;
 use DateTimeInterface;
-use LogicException;
 
 class Validator
 {
@@ -48,14 +47,14 @@ class Validator
 				break;
 
 			default:
-				throw new LogicException(sprintf('Unknown type %s to validate', $type));
+				throw new ValidatorException(sprintf('Unknown type %s to validate', $type));
 		}
 	}
 
 	public static function checkStructure($data, array $structure, array $path = array())
 	{
 		if (count($structure) === 0) {
-			throw new LogicException(sprintf('Cannot validate against empty structure in %s', self::getStructurePath($path)));
+			throw new ValidatorException(sprintf('Cannot validate against empty structure in %s', self::getStructurePath($path)));
 		}
 
 		self::checkArray($data);
@@ -64,17 +63,17 @@ class Validator
 		$listCheck = self::isList($structure);
 		if (!$listCheck) {
 			if (count($data) > 0 && self::isList($data)) {
-				throw new LogicException(sprintf('Unexpected list structure (%s elements found) in %s', count($data), self::getStructurePath($path)));
+				throw new ValidatorException(sprintf('Unexpected list structure (%s elements found) in %s', count($data), self::getStructurePath($path)));
 			}
 
 			$diff = array_diff_key($data, $structure);
 			if (count($diff) > 0) {
-				throw new LogicException(sprintf('Unknown keys (%s) in %s', implode(', ', array_keys($diff)), self::getStructurePath($path)));
+				throw new ValidatorException(sprintf('Unknown keys (%s) in %s', implode(', ', array_keys($diff)), self::getStructurePath($path)));
 			}
 
 			$diff = array_diff_key($structure, $data);
 			if (count($diff) > 0) {
-				throw new LogicException(sprintf('Missing keys (%s) in %s', implode(', ', array_keys($diff)), self::getStructurePath($path)));
+				throw new ValidatorException(sprintf('Missing keys (%s) in %s', implode(', ', array_keys($diff)), self::getStructurePath($path)));
 			}
 		}
 
@@ -87,8 +86,8 @@ class Validator
 			} else {
 				try {
 					self::checkType($value, $newStructure);
-				} catch (LogicException $e) {
-					throw new LogicException(sprintf('Invalid type in %s: %s', self::getStructurePath($path, $key), $e->getMessage()), 0, $e);
+				} catch (ValidatorException $e) {
+					throw new ValidatorException(sprintf('Invalid type in %s: %s', self::getStructurePath($path, $key), $e->getMessage()), $e);
 				}
 			}
 		}
@@ -167,9 +166,9 @@ class Validator
 	private static function throwException($type, $value)
 	{
 		if (is_scalar($value)) {
-			throw new LogicException(sprintf('%s expected, %s (%s) given.', $type, self::getType($value), $value));
+			throw new ValidatorException(sprintf('%s expected, %s (%s) given.', $type, self::getType($value), $value));
 		} else {
-			throw new LogicException(sprintf('%s expected, %s given.', $type, self::getType($value)));
+			throw new ValidatorException(sprintf('%s expected, %s given.', $type, self::getType($value)));
 		}
 	}
 
