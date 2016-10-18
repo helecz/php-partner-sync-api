@@ -26,7 +26,7 @@ class Application
 	}
 
 	/**
-	 * @param Closure $callback function (DateTime $date)
+	 * @param Closure $callback function (DateTime $date, array $parameters)
 	 */
 	public function onCheckSlots(Closure $callback)
 	{

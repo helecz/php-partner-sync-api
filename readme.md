@@ -15,8 +15,8 @@ The best way to install this library is using [Composer](http://getcomposer.org/
 ## Simple usage
 
 ```php
-$app = new \HelePartnerSyncApi\Application('id-assigned-to-you');
-$app->onCheckSlots(function (\DateTime $date) {
+$app = new \HelePartnerSyncApi\Application('secret-key');
+$app->onCheckSlots(function (\DateTime $date, array $parameters) {
     // return $this->reservationFacade->getFreeSlots($date);
 });
 $app->onCreateReservation(function (\DateTime $startDateTime, \DateTime $endDateTime, $quantity, array $parameters) {
