@@ -3,10 +3,10 @@
 namespace HelePartnerSyncApi;
 
 use Exception;
-use HelePartnerSyncApi\Methods\Method;
+use HelePartnerSyncApi\Method\Method;
 use HelePartnerSyncApi\Request\RequestFactory;
-use HelePartnerSyncApi\Responses\ErrorResponse;
-use HelePartnerSyncApi\Responses\SuccessResponse;
+use HelePartnerSyncApi\Response\ErrorResponse;
+use HelePartnerSyncApi\Response\SuccessResponse;
 use Throwable;
 
 class Client

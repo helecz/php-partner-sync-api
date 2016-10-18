@@ -1,6 +1,6 @@
 <?php
 
-namespace HelePartnerSyncApi\Responses;
+namespace HelePartnerSyncApi\Response;
 
 use HelePartnerSyncApi\Client;
 

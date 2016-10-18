@@ -3,9 +3,9 @@
 namespace HelePartnerSyncApi;
 
 use Closure;
-use HelePartnerSyncApi\Methods\CheckHealth;
-use HelePartnerSyncApi\Methods\CheckSlots;
-use HelePartnerSyncApi\Methods\CreateReservation;
+use HelePartnerSyncApi\Method\CheckHealth;
+use HelePartnerSyncApi\Method\CheckSlots;
+use HelePartnerSyncApi\Method\CreateReservation;
 use HelePartnerSyncApi\Request\DefaultRequestFactory;
 
 class Application

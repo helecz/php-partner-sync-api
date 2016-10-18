@@ -1,6 +1,6 @@
 <?php
 
-namespace HelePartnerSyncApi\Methods;
+namespace HelePartnerSyncApi\Method;
 
 use PHPUnit_Framework_TestCase;
 

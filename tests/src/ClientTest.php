@@ -34,11 +34,11 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * @param array $dataToReturn
-	 * @return \HelePartnerSyncApi\Methods\Method
+	 * @return \HelePartnerSyncApi\Method\Method
 	 */
 	protected function getMethodMock(array $dataToReturn)
 	{
-		$method = $this->getMockBuilder('HelePartnerSyncApi\Methods\Method')
+		$method = $this->getMockBuilder('HelePartnerSyncApi\Method\Method')
 			->disableOriginalConstructor()
 			->getMock();
 
