@@ -19,34 +19,72 @@ class RequestTest extends PHPUnit_Framework_TestCase
 		));
 
 		$signature = hash_hmac(Client::SIGNATURE_ALGORITHM, $body, $secret);
-		$headers = array(
-			Client::HEADER_SIGNATURE => $signature,
-		);
 
-		$request = new Request($headers, $body, $secret);
+		$request = new Request($body, $secret, $signature, Client::SIGNATURE_ALGORITHM);
 		$this->assertSame('foo', $request->getData());
 		$this->assertSame('bar', $request->getMethod());
-		$this->assertSame(Client::VERSION, $request->getExpectedVersion());
-		$this->assertSame($signature, $request->getSignature());
 	}
 
-	public function testFailures()
+	public function getTestExceptionData()
 	{
-		$this->checkException(array(), '', 'Invalid JSON in HTTP request body');
-		$this->checkException(array(), '{}', 'Missing data field');
-		$this->checkException(array(), '{"data":1}', 'Missing method field');
-		$this->checkException(array(), '{"data":1, "method":1}', 'Missing expectedVersion field');
+		return array(
+			array(
+				'',
+				'',
+				'',
+				'Invalid JSON in HTTP request body',
+			),
+			array(
+				'{}',
+				'',
+				'',
+				'Missing data field in HTTP request body',
+			),
+			array(
+				'{"data":1}',
+				'',
+				'',
+				'Missing method field in HTTP request body',
+			),
+			array(
+				'{"data":1, "method":1}',
+				'',
+				'',
+				'Missing expectedVersion field in HTTP request body',
+			),
+			array(
+				'{"data":1, "method":1, "expectedVersion": "0.0.1"}',
+				'',
+				'',
+				'Request expected version 0.0.1, but client is 1.0.0',
+			),
+			array(
+				'{"data":1, "method":1, "expectedVersion": "1.0.0"}',
+				'abc',
+				'fooAlgo',
+				'Unknown signature algorithm `fooAlgo` in HTTP Request',
+			),
+			array(
+				'{"data":1, "method":1, "expectedVersion": "1.0.0"}',
+				'abc',
+				'sha1',
+				'Signature in HTTP Request is invalid!',
+			),
+		);
 	}
 
 	/**
-	 * @param array $headers
 	 * @param string $body
+	 * @param string $signature
+	 * @param string $signatureAlgorithm
 	 * @param string $message
+	 *
+	 * @dataProvider getTestExceptionData
 	 */
-	private function checkException(array $headers, $body, $message)
+	public function testException($body, $signature, $signatureAlgorithm, $message)
 	{
 		try {
-			new Request($headers, $body, 'foo secret');
+			new Request($body, '', $signature, $signatureAlgorithm);
 			$this->fail('Exception was expected!');
 
 		} catch (RequestException $e) {

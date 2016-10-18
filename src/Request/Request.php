@@ -8,16 +8,6 @@ class Request
 {
 
 	/**
-	 * @var string
-	 */
-	private $rawBody;
-
-	/**
-	 * @var string
-	 */
-	private $secret;
-
-	/**
 	 * @var array
 	 */
 	private $data;
@@ -28,68 +18,15 @@ class Request
 	private $method;
 
 	/**
-	 * @var string[]
-	 */
-	private $headers;
-
-	/**
-	 * @var string|null
-	 */
-	private $signature;
-
-	/**
-	 * @var string
-	 */
-	private $expectedVersion;
-
-	/**
-	 * @param string[] $headers
-	 * @param string $httpBody
+	 * @param string $jsonData
 	 * @param string $secret
+	 * @param string $signature
+	 * @param string $signatureAlgorithm
 	 */
-	public function __construct(array $headers, $httpBody, $secret)
+	public function __construct($jsonData, $secret, $signature, $signatureAlgorithm)
 	{
-		$this->signature = isset($headers[Client::HEADER_SIGNATURE]) ? $headers[Client::HEADER_SIGNATURE] : null;
-		$this->rawBody = $httpBody;
-		$this->headers = $headers;
-		$this->secret = $secret;
-		$this->parseBody(json_decode($httpBody, true));
-	}
+		$data = json_decode($jsonData, true);
 
-	/**
-	 * @return string
-	 */
-	public function getMethod()
-	{
-		return $this->method;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getData()
-	{
-		return $this->data;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getSignature()
-	{
-		return $this->signature;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getExpectedVersion()
-	{
-		return $this->expectedVersion;
-	}
-
-	private function parseBody($data)
-	{
 		if (!is_array($data)) {
 			throw new RequestException('Invalid JSON in HTTP request body');
 		}
@@ -110,22 +47,36 @@ class Request
 			throw new RequestException(sprintf('Request expected version %s, but client is %s', $data['expectedVersion'], Client::VERSION));
 		}
 
-		if (hash_hmac(Client::SIGNATURE_ALGORITHM, $this->rawBody, $this->secret) !== $this->signature) {
+		if (!in_array($signatureAlgorithm, hash_algos(), true)) {
+			throw new RequestException(sprintf(
+				'Unknown signature algorithm `%s` in HTTP Request. Supported algorithms: %s',
+				$signatureAlgorithm,
+				implode(', ', hash_algos())
+			));
+		}
+
+		if (hash_hmac($signatureAlgorithm, $jsonData, $secret) !== $signature) {
 			throw new RequestException('Signature in HTTP Request is invalid!');
 		}
 
 		$this->data = $data['data'];
 		$this->method = $data['method'];
-		$this->expectedVersion = $data['expectedVersion'];
 	}
 
 	/**
-	 * @param string $header
-	 * @return bool
+	 * @return string
 	 */
-	public function hasHeader($header)
+	public function getMethod()
 	{
-		return array_key_exists($header, $this->headers);
+		return $this->method;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getData()
+	{
+		return $this->data;
 	}
 
 }

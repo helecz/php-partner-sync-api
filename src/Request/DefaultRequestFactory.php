@@ -2,6 +2,8 @@
 
 namespace HelePartnerSyncApi\Request;
 
+use HelePartnerSyncApi\Client;
+
 class DefaultRequestFactory implements RequestFactory
 {
 
@@ -23,7 +25,17 @@ class DefaultRequestFactory implements RequestFactory
 	 */
 	public function createRequest()
 	{
-		return new Request($this->getHeaders(), file_get_contents('php://input'), $this->secret);
+		$headers = $this->getHeaders();
+
+		if (!isset($headers[Client::HEADER_SIGNATURE])) {
+			throw new RequestException(sprintf('Missing %s header in HTTP request', Client::HEADER_SIGNATURE));
+		}
+
+		if (!isset($headers[Client::HEADER_SIGNATURE_ALGORITHM])) {
+			throw new RequestException(sprintf('Missing %s header in HTTP request', Client::HEADER_SIGNATURE_ALGORITHM));
+		}
+
+		return new Request(file_get_contents('php://input'), $this->secret, $headers[Client::HEADER_SIGNATURE], $headers[Client::HEADER_SIGNATURE_ALGORITHM]);
 	}
 
 	/**
