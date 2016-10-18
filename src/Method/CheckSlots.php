@@ -32,11 +32,6 @@ class CheckSlots extends Method
 			throw new MethodException('Bad method input: ' . $e->getMessage(), $e);
 		}
 
-		Validator::checkStructure($data, array(
-			'date' => Validator::TYPE_DATE_TIME_STRING,
-			'parameters' => Validator::TYPE_ARRAY,
-		));
-
 		return array(
 			new DateTime($data['date']),
 			$data['parameters'],
