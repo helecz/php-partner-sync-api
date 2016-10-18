@@ -44,6 +44,11 @@ abstract class Response
 	abstract public function isSuccessful();
 
 	/**
+	 * @return int
+	 */
+	abstract public function getHttpCode();
+
+	/**
 	 * @return string
 	 */
 	abstract public function getMessage();
@@ -54,9 +59,7 @@ abstract class Response
 	 */
 	private function send($signature, $response)
 	{
-		$httpCode = $this->isSuccessful() ? 200 : 500;
-
-		header('HTTP/1.1 ' . $httpCode);
+		header('HTTP/1.1 ' . $this->getHttpCode());
 		header(Client::HEADER_SIGNATURE . ': ' . $signature);
 		header(Client::HEADER_SIGNATURE_ALGORITHM . ': ' . Client::SIGNATURE_ALGORITHM);
 

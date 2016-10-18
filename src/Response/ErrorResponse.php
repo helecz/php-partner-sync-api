@@ -41,6 +41,14 @@ class ErrorResponse extends Response
 	}
 
 	/**
+	 * @return int
+	 */
+	public function getHttpCode()
+	{
+		return $this->exception instanceof HeleException ? 422 : 500;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getMessage()

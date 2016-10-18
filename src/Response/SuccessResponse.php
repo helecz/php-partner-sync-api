@@ -37,6 +37,14 @@ class SuccessResponse extends Response
 	}
 
 	/**
+	 * @return int
+	 */
+	public function getHttpCode()
+	{
+		return 200;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getMessage()
