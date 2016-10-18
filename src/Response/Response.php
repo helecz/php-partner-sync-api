@@ -60,6 +60,7 @@ abstract class Response
 	private function send($signature, $response)
 	{
 		header('HTTP/1.1 ' . $this->getHttpCode());
+		header('Content-Type: application/json');
 		header(Client::HEADER_SIGNATURE . ': ' . $signature);
 		header(Client::HEADER_SIGNATURE_ALGORITHM . ': ' . Client::SIGNATURE_ALGORITHM);
 
