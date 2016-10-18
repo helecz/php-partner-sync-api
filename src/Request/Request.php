@@ -19,6 +19,11 @@ class Request
 	private $method;
 
 	/**
+	 * @var string
+	 */
+	private $expectedVersion;
+
+	/**
 	 * @param string $jsonData
 	 * @param string $secret
 	 * @param string $signature
@@ -52,6 +57,7 @@ class Request
 
 		$this->data = $data['data'];
 		$this->method = $data['method'];
+		$this->expectedVersion = $data['expectedVersion'];
 	}
 
 	/**
@@ -68,6 +74,14 @@ class Request
 	public function getData()
 	{
 		return $this->data;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getExpectedVersion()
+	{
+		return $this->expectedVersion;
 	}
 
 }

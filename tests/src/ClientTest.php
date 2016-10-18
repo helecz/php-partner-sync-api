@@ -81,6 +81,10 @@ class ClientTest extends PHPUnit_Framework_TestCase
 			->method('getMethod')
 			->willReturn($this->method);
 
+		$request->expects(self::atLeastOnce())
+			->method('getExpectedVersion')
+			->willReturn(Client::VERSION);
+
 		return $request;
 	}
 

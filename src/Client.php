@@ -59,6 +59,10 @@ class Client
 		try {
 			$request = $this->requestFactory->createRequest();
 
+			if ($request->getExpectedVersion() !== self::VERSION) {
+				throw new ClientException(sprintf('Server expected version %s, but current version is %s', $request->getExpectedVersion(), self::VERSION));
+			}
+
 			$method = $this->getMethod($request->getMethod());
 
 			$responseData = $method->call($request);
