@@ -174,6 +174,27 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * @expectedException \HelePartnerSyncApi\ValidatorException
+	 * @expectedExceptionMessage Invalid type in key '2': Array expected, string (what?) given.
+	 */
+	public function testCheckInvalidStructureNonArrayElement()
+	{
+		Validator::checkStructure(array(
+			array(
+				'moo' => 1,
+			),
+			array(
+				'moo' => 2,
+			),
+			'what?'
+		), array(
+			array(
+				'moo' => Validator::TYPE_INT,
+			)
+		));
+	}
+
+	/**
+	 * @expectedException \HelePartnerSyncApi\ValidatorException
 	 * @expectedExceptionMessage Invalid type in path 'foo.bar': Int expected, string (moo) given.
 	 */
 	public function testCheckInvalidStructuresDeep()

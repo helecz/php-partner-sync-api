@@ -47,7 +47,7 @@ class Validator
 				break;
 
 			default:
-				throw new ValidatorException(sprintf('Unknown type %s to validate', $type));
+				throw new ValidatorException(sprintf('Unknown type %s to validate', is_scalar($type) ? $type : self::getType($type)));
 		}
 	}
 
@@ -81,17 +81,19 @@ class Validator
 		}
 
 		foreach ($data as $key => $value) {
-			$newStructure = $listCheck ? $structure[0] : $structure[$key];
+			try {
+				$newStructure = $listCheck ? $structure[0] : $structure[$key];
 
-			if (is_array($value) && is_array($newStructure)) {
-				$newPath = array_merge($path, array($key));
-				self::checkStructure($value, $newStructure, $newPath);
-			} else {
-				try {
+				if (is_array($newStructure)) {
+					$newPath = array_merge($path, array($key));
+					self::checkArray($value);
+					self::checkStructure($value, $newStructure, $newPath);
+				} else {
 					self::checkType($value, $newStructure);
-				} catch (ValidatorException $e) {
-					throw new ValidatorException(sprintf('Invalid type in %s: %s', self::getStructurePath($path, $key), $e->getMessage()), $e);
 				}
+
+			} catch (ValidatorException $e) {
+				throw new ValidatorException(sprintf('Invalid type in %s: %s', self::getStructurePath($path, $key), $e->getMessage()), $e);
 			}
 		}
 	}
