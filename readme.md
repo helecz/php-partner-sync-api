@@ -1,5 +1,8 @@
 # Hele partner sync API
 
+[![Build Status](https://travis-ci.org/helecz/php-partner-sync-api.svg)](https://travis-ci.org/helecz/php-partner-sync-api)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/helecz/php-partner-sync-api/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/helecz/php-partner-sync-api/?branch=master)
+
 This repository provides PHP client library for synchronization of reservations with Hele.cz website.
 
 Minimal supported version of PHP is 5.3.
