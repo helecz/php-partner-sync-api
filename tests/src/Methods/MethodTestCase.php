@@ -13,7 +13,7 @@ abstract class MethodTestCase extends PHPUnit_Framework_TestCase
 	 */
 	protected function getRequestMock($dataToReturn)
 	{
-		$request = $this->getMockBuilder('HelePartnerSyncApi\Request')
+		$request = $this->getMockBuilder('HelePartnerSyncApi\Request\Request')
 			->disableOriginalConstructor()
 			->getMock();
 

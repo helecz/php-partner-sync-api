@@ -1,6 +1,6 @@
 <?php
 
-namespace HelePartnerSyncApi;
+namespace HelePartnerSyncApi\Request;
 
 interface RequestFactory
 {

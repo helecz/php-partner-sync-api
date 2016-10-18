@@ -6,6 +6,7 @@ use Closure;
 use HelePartnerSyncApi\Methods\CheckHealth;
 use HelePartnerSyncApi\Methods\CheckSlots;
 use HelePartnerSyncApi\Methods\CreateReservation;
+use HelePartnerSyncApi\Request\DefaultRequestFactory;
 
 class Application
 {
@@ -20,7 +21,7 @@ class Application
 	 */
 	public function __construct($secret)
 	{
-		$this->client = new Client($secret, new DefaultRequestFactory());
+		$this->client = new Client($secret, new DefaultRequestFactory($secret));
 		$this->client->registerMethod(new CheckHealth());
 	}
 

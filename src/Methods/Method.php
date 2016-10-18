@@ -3,7 +3,7 @@
 namespace HelePartnerSyncApi\Methods;
 
 use Closure;
-use HelePartnerSyncApi\Request;
+use HelePartnerSyncApi\Request\Request;
 
 abstract class Method
 {

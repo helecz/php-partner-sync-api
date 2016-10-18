@@ -54,11 +54,11 @@ class ClientTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @return \HelePartnerSyncApi\RequestFactory
+	 * @return \HelePartnerSyncApi\Request\RequestFactory
 	 */
 	private function getRequestFactoryMock()
 	{
-		$factory = $this->getMockBuilder('HelePartnerSyncApi\RequestFactory')
+		$factory = $this->getMockBuilder('HelePartnerSyncApi\Request\RequestFactory')
 			->getMock();
 
 		$factory->expects(self::once())
@@ -69,31 +69,17 @@ class ClientTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @return \HelePartnerSyncApi\Request
+	 * @return \HelePartnerSyncApi\Request\Request
 	 */
 	private function getRequestMock()
 	{
-		$rawBody = '{}';
-
-		$request = $this->getMockBuilder('HelePartnerSyncApi\Request')
+		$request = $this->getMockBuilder('HelePartnerSyncApi\Request\Request')
 			->disableOriginalConstructor()
 			->getMock();
 
 		$request->expects(self::atLeastOnce())
 			->method('getMethod')
 			->willReturn($this->method);
-
-		$request->expects(self::atLeastOnce())
-			->method('getRawBody')
-			->willReturn($rawBody);
-
-		$request->expects(self::atLeastOnce())
-			->method('getExpectedVersion')
-			->willReturn(Client::VERSION);
-
-		$request->expects(self::atLeastOnce())
-			->method('getSignature')
-			->willReturn(hash_hmac(Client::SIGNATURE_ALGORITHM, $rawBody, $this->secret));
 
 		return $request;
 	}

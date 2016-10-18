@@ -3,13 +3,14 @@
 namespace HelePartnerSyncApi\Responses;
 
 use Exception;
+use HelePartnerSyncApi\Exception as HeleException;
 use Throwable;
 
 class ErrorResponse extends Response
 {
 
 	/**
-	 * @var string
+	 * @var Exception|Throwable
 	 */
 	private $exception;
 
@@ -44,7 +45,11 @@ class ErrorResponse extends Response
 	 */
 	public function getMessage()
 	{
-		return $this->exception->getMessage();
+		if ($this->exception instanceof HeleException) {
+			return $this->exception->getMessage();
+		}
+
+		return 'Internal server error';
 	}
 
 	/**

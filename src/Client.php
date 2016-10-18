@@ -4,9 +4,9 @@ namespace HelePartnerSyncApi;
 
 use Exception;
 use HelePartnerSyncApi\Methods\Method;
+use HelePartnerSyncApi\Request\RequestFactory;
 use HelePartnerSyncApi\Responses\ErrorResponse;
 use HelePartnerSyncApi\Responses\SuccessResponse;
-use LogicException;
 use Throwable;
 
 class Client
@@ -59,8 +59,6 @@ class Client
 		try {
 			$request = $this->requestFactory->createRequest();
 
-			$this->validateRequest($request);
-
 			$method = $this->getMethod($request->getMethod());
 
 			$responseData = $method->call($request);
@@ -78,25 +76,15 @@ class Client
 		);
 	}
 
-	private function validateRequest(Request $request)
-	{
-		if ($request->getExpectedVersion() !== self::VERSION) {
-			throw new LogicException(sprintf('Request expected version %s, but client is %s', $request->getExpectedVersion(), self::VERSION));
-		}
-
-		if (hash_hmac(self::SIGNATURE_ALGORITHM, $request->getRawBody(), $this->secret) !== $request->getSignature()) {
-			throw new LogicException('Signature in HTTP Request is invalid!');
-		}
-	}
-
 	/**
 	 * @param string $method
 	 * @return Method
+	 * @throws ClientException
 	 */
 	private function getMethod($method)
 	{
 		if (!isset($this->methods[$method])) {
-			throw new LogicException(sprintf('Method %s was not registered!', $method));
+			throw new ClientException(sprintf('Method %s was not registered!', $method));
 		}
 
 		return $this->methods[$method];

@@ -1,8 +1,8 @@
 <?php
 
-namespace HelePartnerSyncApi;
+namespace HelePartnerSyncApi\Request;
 
-use LogicException;
+use HelePartnerSyncApi\Client;
 use PHPUnit_Framework_TestCase;
 
 class RequestTest extends PHPUnit_Framework_TestCase
@@ -10,25 +10,29 @@ class RequestTest extends PHPUnit_Framework_TestCase
 
 	public function testSuccess()
 	{
-		$headers = array(
-			Client::HEADER_SIGNATURE => 'moo',
-		);
+		$secret = 'foo secret';
+
 		$body = json_encode(array(
 			'data' => 'foo',
 			'method' => 'bar',
-			'expectedVersion' => 'boo',
+			'expectedVersion' => Client::VERSION,
 		));
-		$request = new Request($headers, $body);
-		$this->assertSame($body, $request->getRawBody());
+
+		$signature = hash_hmac(Client::SIGNATURE_ALGORITHM, $body, $secret);
+		$headers = array(
+			Client::HEADER_SIGNATURE => $signature,
+		);
+
+		$request = new Request($headers, $body, $secret);
 		$this->assertSame('foo', $request->getData());
 		$this->assertSame('bar', $request->getMethod());
-		$this->assertSame('boo', $request->getExpectedVersion());
-		$this->assertSame('moo', $request->getSignature());
+		$this->assertSame(Client::VERSION, $request->getExpectedVersion());
+		$this->assertSame($signature, $request->getSignature());
 	}
 
 	public function testFailures()
 	{
-		$this->checkException(array(), '', 'Invalid JSON');
+		$this->checkException(array(), '', 'Invalid JSON in HTTP request body');
 		$this->checkException(array(), '{}', 'Missing data field');
 		$this->checkException(array(), '{"data":1}', 'Missing method field');
 		$this->checkException(array(), '{"data":1, "method":1}', 'Missing expectedVersion field');
@@ -42,10 +46,10 @@ class RequestTest extends PHPUnit_Framework_TestCase
 	private function checkException(array $headers, $body, $message)
 	{
 		try {
-			new Request($headers, $body);
+			new Request($headers, $body, 'foo secret');
 			$this->fail('Exception was expected!');
 
-		} catch (LogicException $e) {
+		} catch (RequestException $e) {
 			$this->assertContains($message, $e->getMessage());
 		}
 	}

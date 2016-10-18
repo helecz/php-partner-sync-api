@@ -1,16 +1,29 @@
 <?php
 
-namespace HelePartnerSyncApi;
+namespace HelePartnerSyncApi\Request;
 
 class DefaultRequestFactory implements RequestFactory
 {
+
+	/**
+	 * @var string
+	 */
+	private $secret;
+
+	/**
+	 * @param string $secret
+	 */
+	public function __construct($secret)
+	{
+		$this->secret = $secret;
+	}
 
 	/**
 	 * @return Request
 	 */
 	public function createRequest()
 	{
-		return new Request($this->getHeaders(), file_get_contents('php://input'));
+		return new Request($this->getHeaders(), file_get_contents('php://input'), $this->secret);
 	}
 
 	/**

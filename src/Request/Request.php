@@ -1,8 +1,8 @@
 <?php
 
-namespace HelePartnerSyncApi;
+namespace HelePartnerSyncApi\Request;
 
-use LogicException;
+use HelePartnerSyncApi\Client;
 
 class Request
 {
@@ -11,6 +11,11 @@ class Request
 	 * @var string
 	 */
 	private $rawBody;
+
+	/**
+	 * @var string
+	 */
+	private $secret;
 
 	/**
 	 * @var array
@@ -40,21 +45,15 @@ class Request
 	/**
 	 * @param string[] $headers
 	 * @param string $httpBody
+	 * @param string $secret
 	 */
-	public function __construct(array $headers, $httpBody)
+	public function __construct(array $headers, $httpBody, $secret)
 	{
 		$this->signature = isset($headers[Client::HEADER_SIGNATURE]) ? $headers[Client::HEADER_SIGNATURE] : null;
 		$this->rawBody = $httpBody;
 		$this->headers = $headers;
+		$this->secret = $secret;
 		$this->parseBody(json_decode($httpBody, true));
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getRawBody()
-	{
-		return $this->rawBody;
 	}
 
 	/**
@@ -92,19 +91,27 @@ class Request
 	private function parseBody($data)
 	{
 		if (!is_array($data)) {
-			throw new LogicException('Invalid JSON in HTTP request body');
+			throw new RequestException('Invalid JSON in HTTP request body');
 		}
 
 		if (!isset($data['data'])) {
-			throw new LogicException('Missing data field in HTTP request body');
+			throw new RequestException('Missing data field in HTTP request body');
 		}
 
 		if (!isset($data['method'])) {
-			throw new LogicException('Missing method field in HTTP request body');
+			throw new RequestException('Missing method field in HTTP request body');
 		}
 
 		if (!isset($data['expectedVersion'])) {
-			throw new LogicException('Missing expectedVersion field in HTTP request body');
+			throw new RequestException('Missing expectedVersion field in HTTP request body');
+		}
+
+		if ($data['expectedVersion'] !== Client::VERSION) {
+			throw new RequestException(sprintf('Request expected version %s, but client is %s', $data['expectedVersion'], Client::VERSION));
+		}
+
+		if (hash_hmac(Client::SIGNATURE_ALGORITHM, $this->rawBody, $this->secret) !== $this->signature) {
+			throw new RequestException('Signature in HTTP Request is invalid!');
 		}
 
 		$this->data = $data['data'];
