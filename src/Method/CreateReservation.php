@@ -20,7 +20,7 @@ class CreateReservation extends Method
 	 * @param array $data
 	 * @return array
 	 */
-	protected function parseRequestData($data)
+	protected function constructRequestData($data)
 	{
 		Validator::checkStructure($data, array(
 			'startDateTime' => Validator::TYPE_DATE_TIME_STRING,

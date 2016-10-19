@@ -21,7 +21,7 @@ class GetSlots extends Method
 	 * @param array $data
 	 * @return array
 	 */
-	protected function parseRequestData($data)
+	protected function constructRequestData($data)
 	{
 		Validator::checkStructure($data, array(
 			'date' => Validator::TYPE_DATE_TIME_STRING,

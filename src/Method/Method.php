@@ -29,7 +29,7 @@ abstract class Method
 	public function call(Request $request)
 	{
 		try {
-			$requestData = $this->parseRequestData($request->getData());
+			$requestData = $this->constructRequestData($request->getData());
 		} catch (ValidatorException $e) {
 			throw new MethodException('Invalid request data from server: ' . $e->getMessage(), $e);
 		}
@@ -53,7 +53,7 @@ abstract class Method
 	 * @param array $data
 	 * @return array
 	 */
-	abstract protected function parseRequestData($data);
+	abstract protected function constructRequestData($data);
 
 	/**
 	 * @param mixed $data

@@ -24,7 +24,7 @@ class CheckHealth extends Method
 	 * @param array $data
 	 * @return array
 	 */
-	protected function parseRequestData($data)
+	protected function constructRequestData($data)
 	{
 		return array($data);
 	}
