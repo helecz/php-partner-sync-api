@@ -4,6 +4,7 @@ namespace HelePartnerSyncApi\Method;
 
 use Closure;
 use HelePartnerSyncApi\Request\Request;
+use HelePartnerSyncApi\ValidatorException;
 
 abstract class Method
 {
@@ -27,10 +28,20 @@ abstract class Method
 	 */
 	public function call(Request $request)
 	{
-		return $this->parseResponseData(call_user_func_array(
-			$this->callback,
-			$this->parseRequestData($request->getData())
-		));
+		try {
+			$requestData = $this->parseRequestData($request->getData());
+		} catch (ValidatorException $e) {
+			throw new MethodException('Bad method input: ' . $e->getMessage(), $e);
+		}
+
+		try {
+			return $this->parseResponseData(call_user_func_array(
+				$this->callback,
+				$requestData
+			));
+		} catch (ValidatorException $e) {
+			throw new MethodException('Bad method output: ' . $e->getMessage(), $e);
+		}
 	}
 
 	/**

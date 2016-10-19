@@ -23,14 +23,10 @@ class CheckSlots extends Method
 	 */
 	protected function parseRequestData($data)
 	{
-		try {
-			Validator::checkStructure($data, array(
-				'date' => Validator::TYPE_DATE_TIME_STRING,
-				'parameters' => Validator::TYPE_ARRAY,
-			));
-		} catch (ValidatorException $e) {
-			throw new MethodException('Bad method input: ' . $e->getMessage(), $e);
-		}
+		Validator::checkStructure($data, array(
+			'date' => Validator::TYPE_DATE_TIME_STRING,
+			'parameters' => Validator::TYPE_ARRAY,
+		));
 
 		return array(
 			new DateTime($data['date']),
@@ -44,19 +40,13 @@ class CheckSlots extends Method
 	 */
 	protected function parseResponseData($data)
 	{
-		$exceptionPrefix = 'Bad method output: ';
-
-		try {
-			Validator::checkStructure($data, array(
-				array(
-					'startDateTime' => Validator::TYPE_DATE_TIME,
-					'endDateTime' => Validator::TYPE_DATE_TIME,
-					'capacity' => Validator::TYPE_INT,
-				),
-			));
-		} catch (ValidatorException $e) {
-			throw new MethodException($exceptionPrefix . $e->getMessage(), $e);
-		}
+		Validator::checkStructure($data, array(
+			array(
+				'startDateTime' => Validator::TYPE_DATE_TIME,
+				'endDateTime' => Validator::TYPE_DATE_TIME,
+				'capacity' => Validator::TYPE_INT,
+			),
+		));
 
 		$result = array();
 
@@ -67,11 +57,11 @@ class CheckSlots extends Method
 			$capacity = $slot['capacity'];
 
 			if ($startDateTime >= $endDateTime) {
-				throw new MethodException(sprintf('%sSlot startDateTime (%s) must be before endDateTime (%s) %s', $exceptionPrefix, $startDateTime, $endDateTime, $whichSlot));
+				throw new ValidatorException(sprintf('Slot startDateTime (%s) must be before endDateTime (%s) %s', $startDateTime, $endDateTime, $whichSlot));
 			}
 
 			if ($capacity < 0) {
-				throw new MethodException(sprintf('%sSlot capacity (%s) must be non-negative %s', $exceptionPrefix, $capacity, $whichSlot));
+				throw new ValidatorException(sprintf('Slot capacity (%s) must be non-negative %s', $capacity, $whichSlot));
 			}
 
 			$result[] = array(

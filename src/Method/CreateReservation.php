@@ -4,7 +4,6 @@ namespace HelePartnerSyncApi\Method;
 
 use DateTime;
 use HelePartnerSyncApi\Validator;
-use HelePartnerSyncApi\ValidatorException;
 
 class CreateReservation extends Method
 {
@@ -23,16 +22,12 @@ class CreateReservation extends Method
 	 */
 	protected function parseRequestData($data)
 	{
-		try {
-			Validator::checkStructure($data, array(
-				'startDateTime' => Validator::TYPE_DATE_TIME_STRING,
-				'endDateTime' => Validator::TYPE_DATE_TIME_STRING,
-				'quantity' => Validator::TYPE_INT,
-				'parameters' => Validator::TYPE_ARRAY,
-			));
-		} catch (ValidatorException $e) {
-			throw new MethodException('Bad method input: ' . $e->getMessage(), $e);
-		}
+		Validator::checkStructure($data, array(
+			'startDateTime' => Validator::TYPE_DATE_TIME_STRING,
+			'endDateTime' => Validator::TYPE_DATE_TIME_STRING,
+			'quantity' => Validator::TYPE_INT,
+			'parameters' => Validator::TYPE_ARRAY,
+		));
 
 		return array(
 			DateTime::createFromFormat(DateTime::W3C, $data['startDateTime']),
@@ -48,11 +43,7 @@ class CreateReservation extends Method
 	 */
 	protected function parseResponseData($data)
 	{
-		try {
-			Validator::checkNull($data);
-		} catch (ValidatorException $e) {
-			throw new MethodException('Bad method output: ' . $e->getMessage(), $e);
-		}
+		Validator::checkNull($data);
 
 		return array();
 	}
