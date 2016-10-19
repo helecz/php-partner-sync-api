@@ -41,7 +41,7 @@ class CancelReservation extends Method
 	 * @param mixed $data
 	 * @return array
 	 */
-	protected function parseResponseData($data)
+	protected function constructResponseData($data)
 	{
 		Validator::checkNull($data);
 

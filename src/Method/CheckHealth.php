@@ -33,7 +33,7 @@ class CheckHealth extends Method
 	 * @param mixed $data
 	 * @return array
 	 */
-	protected function parseResponseData($data)
+	protected function constructResponseData($data)
 	{
 		return array(
 			'requestData' => $data,

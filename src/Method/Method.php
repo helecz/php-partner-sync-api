@@ -35,7 +35,7 @@ abstract class Method
 		}
 
 		try {
-			return $this->parseResponseData(call_user_func_array(
+			return $this->constructResponseData(call_user_func_array(
 				$this->callback,
 				$requestData
 			));
@@ -59,6 +59,6 @@ abstract class Method
 	 * @param mixed $data
 	 * @return array
 	 */
-	abstract protected function parseResponseData($data);
+	abstract protected function constructResponseData($data);
 
 }

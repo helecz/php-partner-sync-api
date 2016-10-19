@@ -41,7 +41,7 @@ class CreateReservation extends Method
 	 * @param mixed $data
 	 * @return null
 	 */
-	protected function parseResponseData($data)
+	protected function constructResponseData($data)
 	{
 		Validator::checkNull($data);
 
