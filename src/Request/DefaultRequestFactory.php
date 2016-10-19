@@ -21,12 +21,12 @@ class DefaultRequestFactory implements RequestFactory
 	}
 
 	/**
+	 * @param string $body
+	 * @param string[] $headers
 	 * @return Request
 	 */
-	public function createRequest()
+	public function createRequest($body, array $headers)
 	{
-		$headers = $this->getHeaders();
-
 		if (!isset($headers[Client::HEADER_SIGNATURE])) {
 			throw new RequestException(sprintf('Missing %s header in HTTP request', Client::HEADER_SIGNATURE));
 		}
@@ -35,29 +35,7 @@ class DefaultRequestFactory implements RequestFactory
 			throw new RequestException(sprintf('Missing %s header in HTTP request', Client::HEADER_SIGNATURE_ALGORITHM));
 		}
 
-		return new Request(file_get_contents('php://input'), $this->secret, $headers[Client::HEADER_SIGNATURE], $headers[Client::HEADER_SIGNATURE_ALGORITHM]);
-	}
-
-	/**
-	 * @return string[]
-	 */
-	private function getHeaders()
-	{
-		if (function_exists('apache_request_headers')) {
-			return apache_request_headers();
-		}
-
-		$headers = array();
-		foreach ($_SERVER as $k => $v) {
-			if (strncmp($k, 'HTTP_', 5) == 0) {
-				$k = substr($k, 5);
-			} elseif (strncmp($k, 'CONTENT_', 8)) {
-				continue;
-			}
-			$headers[strtr($k, '_', '-')] = $v;
-		}
-
-		return $headers;
+		return new Request($body, $this->secret, $headers[Client::HEADER_SIGNATURE], $headers[Client::HEADER_SIGNATURE_ALGORITHM]);
 	}
 
 }

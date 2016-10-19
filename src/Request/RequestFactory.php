@@ -6,8 +6,10 @@ interface RequestFactory
 {
 
 	/**
+	 * @param string $body
+	 * @param string[] $headers
 	 * @return Request
 	 */
-	public function createRequest();
+	public function createRequest($body, array $headers);
 
 }

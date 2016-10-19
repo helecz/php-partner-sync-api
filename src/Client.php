@@ -44,12 +44,14 @@ class Client
 	}
 
 	/**
+	 * @param string $body
+	 * @param string[] $headers
 	 * @return Response
 	 */
-	public function run()
+	public function run($body, array $headers)
 	{
 		try {
-			$request = $this->requestFactory->createRequest();
+			$request = $this->requestFactory->createRequest($body, $headers);
 
 			if ($request->getExpectedVersion() !== self::VERSION) {
 				throw new ClientException(sprintf('Server expected version %s, but current version is %s', $request->getExpectedVersion(), self::VERSION));

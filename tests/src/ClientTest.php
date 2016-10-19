@@ -36,7 +36,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
 		$client = new Client($requestFactory, $responseFactory);
 		$client->registerMethod($method);
 
-		$response = $client->run();
+		$response = $client->run('', array());
 
 		$this->assertTrue($response->isSuccessful());
 		$this->assertSame($data, $response->getData());
