@@ -31,7 +31,7 @@ abstract class Method
 		try {
 			$requestData = $this->parseRequestData($request->getData());
 		} catch (ValidatorException $e) {
-			throw new MethodException('Bad method input: ' . $e->getMessage(), $e);
+			throw new MethodException('Invalid request data from server: ' . $e->getMessage(), $e);
 		}
 
 		try {
@@ -40,7 +40,7 @@ abstract class Method
 				$requestData
 			));
 		} catch (ValidatorException $e) {
-			throw new MethodException('Bad method output: ' . $e->getMessage(), $e);
+			throw new MethodException(sprintf('Invalid data returned from callback of %s method: %s', $this->getName(), $e->getMessage()), $e);
 		}
 	}
 
