@@ -2,8 +2,8 @@
 
 namespace HelePartnerSyncApi\Request;
 
+use HelePartnerSyncApi\ValidationException;
 use HelePartnerSyncApi\Validator;
-use HelePartnerSyncApi\ValidatorException;
 
 class Request
 {
@@ -51,7 +51,7 @@ class Request
 				'data' => Validator::TYPE_ARRAY,
 			));
 
-		} catch (ValidatorException $e) {
+		} catch (ValidationException $e) {
 			throw new RequestException('Invalid request: ' . $e->getMessage(), $e);
 		}
 

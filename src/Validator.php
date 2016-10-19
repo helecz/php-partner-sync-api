@@ -47,14 +47,14 @@ class Validator
 				break;
 
 			default:
-				throw new ValidatorException(sprintf('Unknown type %s to validate', is_scalar($type) ? $type : self::getType($type)));
+				throw new ValidationException(sprintf('Unknown type %s to validate', is_scalar($type) ? $type : self::getType($type)));
 		}
 	}
 
 	public static function checkStructure($data, array $structure, array $path = array())
 	{
 		if (count($structure) === 0) {
-			throw new ValidatorException(sprintf('Cannot validate against empty structure in %s', self::getStructurePath($path)));
+			throw new ValidationException(sprintf('Cannot validate against empty structure in %s', self::getStructurePath($path)));
 		}
 
 		self::checkArray($data);
@@ -63,21 +63,21 @@ class Validator
 		$listCheck = self::isList($structure);
 		if (!$listCheck) {
 			if (count($data) > 0 && self::isList($data)) {
-				throw new ValidatorException(sprintf('Unexpected list structure (%s elements found) in %s', count($data), self::getStructurePath($path)));
+				throw new ValidationException(sprintf('Unexpected list structure (%s elements found) in %s', count($data), self::getStructurePath($path)));
 			}
 
 			$diff = array_diff_key($data, $structure);
 			if (count($diff) > 0) {
-				throw new ValidatorException(sprintf('Unknown keys (%s) in %s', implode(', ', array_keys($diff)), self::getStructurePath($path)));
+				throw new ValidationException(sprintf('Unknown keys (%s) in %s', implode(', ', array_keys($diff)), self::getStructurePath($path)));
 			}
 
 			$diff = array_diff_key($structure, $data);
 			if (count($diff) > 0) {
-				throw new ValidatorException(sprintf('Missing keys (%s) in %s', implode(', ', array_keys($diff)), self::getStructurePath($path)));
+				throw new ValidationException(sprintf('Missing keys (%s) in %s', implode(', ', array_keys($diff)), self::getStructurePath($path)));
 			}
 
 		} elseif (count($data) > 0 && !self::isList($data)) {
-			throw new ValidatorException(sprintf('Expected list structure in %s', self::getStructurePath($path)));
+			throw new ValidationException(sprintf('Expected list structure in %s', self::getStructurePath($path)));
 		}
 
 		foreach ($data as $key => $value) {
@@ -92,8 +92,8 @@ class Validator
 					self::checkType($value, $newStructure);
 				}
 
-			} catch (ValidatorException $e) {
-				throw new ValidatorException(sprintf('Invalid type in %s: %s', self::getStructurePath($path, $key), $e->getMessage()), $e);
+			} catch (ValidationException $e) {
+				throw new ValidationException(sprintf('Invalid type in %s: %s', self::getStructurePath($path, $key), $e->getMessage()), $e);
 			}
 		}
 	}
@@ -169,9 +169,9 @@ class Validator
 	private static function throwException($type, $value)
 	{
 		if (is_scalar($value)) {
-			throw new ValidatorException(sprintf('%s expected, %s (%s) given.', $type, self::getType($value), $value));
+			throw new ValidationException(sprintf('%s expected, %s (%s) given.', $type, self::getType($value), $value));
 		} else {
-			throw new ValidatorException(sprintf('%s expected, %s given.', $type, self::getType($value)));
+			throw new ValidationException(sprintf('%s expected, %s given.', $type, self::getType($value)));
 		}
 	}
 

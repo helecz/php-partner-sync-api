@@ -3,8 +3,8 @@
 namespace HelePartnerSyncApi\Method;
 
 use DateTime;
+use HelePartnerSyncApi\ValidationException;
 use HelePartnerSyncApi\Validator;
-use HelePartnerSyncApi\ValidatorException;
 
 class GetSlots extends Method
 {
@@ -57,11 +57,11 @@ class GetSlots extends Method
 			$capacity = $slot['capacity'];
 
 			if ($startDateTime >= $endDateTime) {
-				throw new ValidatorException(sprintf('Slot startDateTime (%s) must be before endDateTime (%s) %s', $startDateTime, $endDateTime, $whichSlot));
+				throw new ValidationException(sprintf('Slot startDateTime (%s) must be before endDateTime (%s) %s', $startDateTime, $endDateTime, $whichSlot));
 			}
 
 			if ($capacity < 0) {
-				throw new ValidatorException(sprintf('Slot capacity (%s) must be non-negative %s', $capacity, $whichSlot));
+				throw new ValidationException(sprintf('Slot capacity (%s) must be non-negative %s', $capacity, $whichSlot));
 			}
 
 			$result[] = array(

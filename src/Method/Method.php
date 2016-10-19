@@ -4,7 +4,7 @@ namespace HelePartnerSyncApi\Method;
 
 use Closure;
 use HelePartnerSyncApi\Request\Request;
-use HelePartnerSyncApi\ValidatorException;
+use HelePartnerSyncApi\ValidationException;
 
 abstract class Method
 {
@@ -30,7 +30,7 @@ abstract class Method
 	{
 		try {
 			$requestData = $this->constructRequestData($request->getData());
-		} catch (ValidatorException $e) {
+		} catch (ValidationException $e) {
 			throw new MethodException('Invalid request data from server: ' . $e->getMessage(), $e);
 		}
 
@@ -39,7 +39,7 @@ abstract class Method
 				$this->callback,
 				$requestData
 			));
-		} catch (ValidatorException $e) {
+		} catch (ValidationException $e) {
 			throw new MethodException(sprintf('Invalid data returned from callback of %s method: %s', $this->getName(), $e->getMessage()), $e);
 		}
 	}
