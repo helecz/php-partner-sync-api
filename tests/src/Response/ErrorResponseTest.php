@@ -15,7 +15,6 @@ class ErrorResponseTest extends PHPUnit_Framework_TestCase
 		$exception = new RequestException($message);
 		$response = new ErrorResponse('secret', $exception);
 
-		$this->assertSame($exception, $response->getException());
 		$this->assertSame($message, $response->getMessage());
 		$this->assertSame(array(), $response->getData());
 		$this->assertFalse($response->isSuccessful());
@@ -26,7 +25,6 @@ class ErrorResponseTest extends PHPUnit_Framework_TestCase
 		$exception = new Exception(uniqid());
 		$response = new ErrorResponse('secret', $exception);
 
-		$this->assertSame($exception, $response->getException());
 		$this->assertSame('Internal server error', $response->getMessage());
 		$this->assertSame(array(), $response->getData());
 		$this->assertFalse($response->isSuccessful());

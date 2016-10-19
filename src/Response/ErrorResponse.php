@@ -60,12 +60,4 @@ class ErrorResponse extends Response
 		return 'Internal server error';
 	}
 
-	/**
-	 * @return Exception|Throwable
-	 */
-	public function getException()
-	{
-		return $this->exception;
-	}
-
 }
