@@ -14,7 +14,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
 		$body = json_encode(array(
 			'data' => array('foo'),
 			'method' => 'bar',
-			'expectedVersion' => '1.0.0',
+			'expectedVersion' => '1.0',
 		));
 
 		$signature = hash_hmac('sha1', $body, $secret);
