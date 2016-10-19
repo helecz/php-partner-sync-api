@@ -26,7 +26,7 @@ Or download archive from [Github](https://github.com/helecz/php-partner-sync-api
 require __DIR__ . '/vendor/autoload.php';
 
 $app = new \HelePartnerSyncApi\Application('secret-key');
-$app->onCheckSlots(function (\DateTime $date, array $parameters) {
+$app->onGetSlots(function (\DateTime $date, array $parameters) {
     // return $this->reservationFacade->getFreeSlots($date);
 });
 $app->onCreateReservation(function (\DateTime $startDateTime, \DateTime $endDateTime, $quantity, array $parameters) {
@@ -41,7 +41,7 @@ $app->run();
 If reservation cannot be created for some reason, you can throw any Exception and the reservation on Hele website will not be performed.
 The `$parameters` argument may contain custom data needed by your application (e.g. some `serviceId` identifying service in your application) - if you need so, contact us.
 
-Callback in `onCheckSlots` must return array of arrays in following format:
+Callback in `onGetSlots` must return array of arrays in following format:
 
 ```php
 [

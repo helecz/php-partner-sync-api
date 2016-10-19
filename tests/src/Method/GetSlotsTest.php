@@ -4,7 +4,7 @@ namespace HelePartnerSyncApi\Method;
 
 use DateTime;
 
-class CheckSlotsTest extends MethodTestCase
+class GetSlotsTest extends MethodTestCase
 {
 
 	public function testSuccess()
@@ -26,7 +26,7 @@ class CheckSlotsTest extends MethodTestCase
 				),
 			);
 		};
-		$method = new CheckSlots($closure);
+		$method = new GetSlots($closure);
 		$response = $method->call($request);
 
 		$this->assertSame(array(
@@ -108,7 +108,7 @@ class CheckSlotsTest extends MethodTestCase
 	{
 		try {
 			$request = $this->getRequestMock($requestData);
-			$method = new CheckSlots(function () use ($responseData) {
+			$method = new GetSlots(function () use ($responseData) {
 				return $responseData;
 			});
 			$method->call($request);

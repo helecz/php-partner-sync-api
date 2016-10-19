@@ -6,7 +6,7 @@ use DateTime;
 use HelePartnerSyncApi\Validator;
 use HelePartnerSyncApi\ValidatorException;
 
-class CheckSlots extends Method
+class GetSlots extends Method
 {
 
 	/**
@@ -14,7 +14,7 @@ class CheckSlots extends Method
 	 */
 	public function getName()
 	{
-		return 'checkSlots';
+		return 'getSlots';
 	}
 
 	/**
