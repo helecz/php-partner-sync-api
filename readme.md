@@ -22,7 +22,7 @@ Or download archive from [Github](https://github.com/helecz/php-partner-sync-api
 ```php
 <?php
 
-// require __DIR__ . '/hele-partner-sync-api/autoload.php';
+// require __DIR__ . '/hele-partner-sync-api/autoload.php'; // non-composer usage
 require __DIR__ . '/vendor/autoload.php';
 
 $app = new \HelePartnerSyncApi\Application('secret-key');
