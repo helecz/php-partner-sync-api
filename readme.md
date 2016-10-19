@@ -12,12 +12,19 @@ Minimal supported version of PHP is 5.3.
 The best way to install this library is using [Composer](http://getcomposer.org/):
 
 ```
-> composer require hele/partner-sync-api
+composer require hele/partner-sync-api
 ```
+
+Or download archive from [Github](https://github.com/helecz/php-partner-sync-api/releases) and extract to your project.
 
 ## Simple usage
 
 ```php
+<?php
+
+// require __DIR__ . '/hele-partner-sync-api/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
+
 $app = new \HelePartnerSyncApi\Application('secret-key');
 $app->onCheckSlots(function (\DateTime $date, array $parameters) {
     // return $this->reservationFacade->getFreeSlots($date);
