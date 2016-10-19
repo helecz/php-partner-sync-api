@@ -39,7 +39,7 @@ class CreateReservation extends Method
 
 	/**
 	 * @param mixed $data
-	 * @return null
+	 * @return array
 	 */
 	protected function constructResponseData($data)
 	{
