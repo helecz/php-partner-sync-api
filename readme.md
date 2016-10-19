@@ -41,7 +41,8 @@ $app->run();
 If reservation cannot be created for some reason, you can throw any Exception and the reservation on Hele website will not be performed.
 The `$parameters` argument may contain custom data needed by your application (e.g. some `serviceId` identifying service in your application) - if you need so, contact us.
 
-Callback in `onGetSlots` must return array of arrays in following format:
+Callback in `onGetSlots` must return array of arrays in following format.
+You should always return all slots from your database (matching given date and parameters) even if only few of them will be synchronized with Hele.
 
 ```php
 [
