@@ -5,8 +5,8 @@ namespace HelePartnerSyncApi;
 use Exception;
 use HelePartnerSyncApi\Method\Method;
 use HelePartnerSyncApi\Request\RequestFactory;
-use HelePartnerSyncApi\Response\ErrorResponse;
-use HelePartnerSyncApi\Response\SuccessResponse;
+use HelePartnerSyncApi\Response\Response;
+use HelePartnerSyncApi\Response\ResponseFactory;
 use Throwable;
 
 class Client
@@ -16,11 +16,6 @@ class Client
 
 	const HEADER_SIGNATURE = 'X-Hele-Signature';
 	const HEADER_SIGNATURE_ALGORITHM = 'X-Hele-Signature-Algorithm';
-
-	/**
-	 * @var string
-	 */
-	private $secret;
 
 	/**
 	 * @var Method[]
@@ -33,15 +28,14 @@ class Client
 	private $requestFactory;
 
 	/**
-	 * @param string $secret
-	 * @param RequestFactory $requestFactory
+	 * @var ResponseFactory
 	 */
-	public function __construct($secret, RequestFactory $requestFactory)
-	{
-		Validator::checkString($secret);
+	private $responseFactory;
 
-		$this->secret = $secret;
+	public function __construct(RequestFactory $requestFactory, ResponseFactory $responseFactory)
+	{
 		$this->requestFactory = $requestFactory;
+		$this->responseFactory = $responseFactory;
 	}
 
 	public function registerMethod(Method $method)
@@ -50,7 +44,7 @@ class Client
 	}
 
 	/**
-	 * @return SuccessResponse|ErrorResponse
+	 * @return Response
 	 */
 	public function run()
 	{
@@ -66,16 +60,13 @@ class Client
 			$responseData = $method->call($request);
 
 		} catch (Exception $e) {
-			return new ErrorResponse($this->secret, $e);
+			return $this->responseFactory->createErrorResponse($e);
 
 		} catch (Throwable $e) {
-			return new ErrorResponse($this->secret, $e);
+			return $this->responseFactory->createErrorResponse($e);
 		}
 
-		return new SuccessResponse(
-			$this->secret,
-			$responseData
-		);
+		return $this->responseFactory->createSuccessResponse($responseData);
 	}
 
 	/**

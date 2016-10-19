@@ -2,6 +2,7 @@
 
 namespace HelePartnerSyncApi;
 
+use HelePartnerSyncApi\Response\SuccessResponse;
 use PHPUnit_Framework_TestCase;
 
 class ClientTest extends PHPUnit_Framework_TestCase
@@ -23,7 +24,14 @@ class ClientTest extends PHPUnit_Framework_TestCase
 		$method = $this->getMethodMock($data);
 		$requestFactory = $this->getRequestFactoryMock();
 
-		$client = new Client($this->secret, $requestFactory);
+		$responseFactory = $this->getMockBuilder('HelePartnerSyncApi\Response\ResponseFactory')
+			->getMock();
+		$responseFactory->expects(self::once())
+			->method('createSuccessResponse')
+			->with($data)
+			->willReturn(new SuccessResponse($this->secret, $data));
+
+		$client = new Client($requestFactory, $responseFactory);
 		$client->registerMethod($method);
 
 		$response = $client->run();
@@ -36,7 +44,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
 	 * @param array $dataToReturn
 	 * @return \HelePartnerSyncApi\Method\Method
 	 */
-	protected function getMethodMock(array $dataToReturn)
+	private function getMethodMock(array $dataToReturn)
 	{
 		$method = $this->getMockBuilder('HelePartnerSyncApi\Method\Method')
 			->disableOriginalConstructor()
