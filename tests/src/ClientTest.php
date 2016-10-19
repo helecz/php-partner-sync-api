@@ -24,8 +24,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
 		$method = $this->getMethodMock($data);
 		$requestFactory = $this->getRequestFactoryMock();
 
-		$responseFactory = $this->getMockBuilder('HelePartnerSyncApi\Response\ResponseFactory')
-			->getMock();
+		$responseFactory = $this->getMock('HelePartnerSyncApi\Response\ResponseFactory');
 		$responseFactory->expects(self::once())
 			->method('createSuccessResponse')
 			->with($data)
