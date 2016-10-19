@@ -2,14 +2,13 @@
 
 namespace HelePartnerSyncApi;
 
-use Exception as BaseException;
-use HelePartnerSyncApi\Exception as HeleException;
-use RuntimeException as BaseRuntimeException;
+use Exception;
+use RuntimeException as InternalRuntimeException;
 
-abstract class RuntimeException extends BaseRuntimeException implements HeleException
+abstract class RuntimeException extends InternalRuntimeException implements HeleException
 {
 
-	public function __construct($message, BaseException $previous = null)
+	public function __construct($message, Exception $previous = null)
 	{
 		parent::__construct($message, 0, $previous);
 	}

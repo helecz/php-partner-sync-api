@@ -3,7 +3,7 @@
 namespace HelePartnerSyncApi\Response;
 
 use Exception;
-use HelePartnerSyncApi\Exception as HeleException;
+use HelePartnerSyncApi\HeleException;
 use Throwable;
 
 class ErrorResponse extends Response

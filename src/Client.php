@@ -2,7 +2,7 @@
 
 namespace HelePartnerSyncApi;
 
-use Exception as BaseException;
+use Exception;
 use HelePartnerSyncApi\Method\Method;
 use HelePartnerSyncApi\Request\RequestFactory;
 use HelePartnerSyncApi\Response\ErrorResponse;
@@ -67,7 +67,7 @@ class Client
 
 			$responseData = $method->call($request);
 
-		} catch (BaseException $e) {
+		} catch (Exception $e) {
 			return new ErrorResponse($this->secret, $e);
 
 		} catch (Throwable $e) {

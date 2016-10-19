@@ -2,7 +2,7 @@
 
 namespace HelePartnerSyncApi;
 
-interface Exception
+interface HeleException
 {
 
 	/**
