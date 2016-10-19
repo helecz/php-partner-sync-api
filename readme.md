@@ -38,11 +38,29 @@ $app->onCancelReservation(function (\DateTime $startDateTime, \DateTime $endDate
 $app->run();
 ```
 
-If reservation cannot be created for some reason, you can throw any Exception and the reservation on Hele website will not be performed.
-The `$parameters` argument may contain custom data needed by your application (e.g. some `serviceId` identifying service in your application) - if you need so, contact us.
+- All `$parameters` arguments may contain custom data needed by your application (e.g. some `serviceId` identifying service in your application) - if you need so, contact us.
+- All callbacks should finish within 9 seconds!
+- Secret key will be assigned to you and should not leak anywhere (if that happens somehow, contact us for generating new one).
 
-Callback in `onGetSlots` must return array of arrays in following format.
-You should always return all slots from your database (matching given date and parameters) even if only few of them will be synchronized with Hele.
+### `onCreateReservation`
+
+This endpoint is called when user creates some order on Hele.cz.
+You should save new reservation to your database with the data given.
+If reservation cannot be created for some reason, you can throw any Exception and the reservation on Hele website will not be performed.
+We call this endpoint only if we know there is a free slot on that time (according to output in `onGetSlots`), so throwing exceptions should not be needed.
+
+### `onCancelReservation`
+
+This endpoint is called when previously created reservation is cancelled.
+You should delete old reservation from your database to free the time slot.
+If you do not want to implement this feature, let us know and we will send you an email on such cases
+(but you will need to perform this action manually).
+
+### `onGetSlots`
+
+This endpoint is called periodically to synchronize reservations on Hele.cz with your database.
+You should always return all slots from your database (matching given date and parameters) even if only few of them will be available for Hele.
+The callback must return array of arrays in following format:
 
 ```php
 [
