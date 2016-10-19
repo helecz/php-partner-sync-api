@@ -2,6 +2,9 @@
 
 namespace HelePartnerSyncApi;
 
+use HelePartnerSyncApi\Method\Method;
+use HelePartnerSyncApi\Request\Request;
+use HelePartnerSyncApi\Request\RequestFactory;
 use HelePartnerSyncApi\Response\SuccessResponse;
 use PHPUnit_Framework_TestCase;
 
@@ -41,7 +44,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * @param array $dataToReturn
-	 * @return \HelePartnerSyncApi\Method\Method
+	 * @return Method
 	 */
 	private function getMethodMock(array $dataToReturn)
 	{
@@ -61,7 +64,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @return \HelePartnerSyncApi\Request\RequestFactory
+	 * @return RequestFactory
 	 */
 	private function getRequestFactoryMock()
 	{
@@ -76,7 +79,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @return \HelePartnerSyncApi\Request\Request
+	 * @return Request
 	 */
 	private function getRequestMock()
 	{
