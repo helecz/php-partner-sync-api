@@ -7,18 +7,12 @@ class CheckHealthTest extends MethodTestCase
 
 	public function testSuccess()
 	{
-		$data = array(
-			'foo' => 'fooValue',
-			'bar' => 'barValue',
-		);
-		$request = $this->getRequestMock($data);
+		$request = $this->getRequestMock(array());
 
 		$method = new CheckHealth();
 		$response = $method->call($request);
 
-		$this->assertSame(array(
-			'requestData' => $data,
-		), $response);
+		$this->assertSame(array(), $response);
 	}
 
 }

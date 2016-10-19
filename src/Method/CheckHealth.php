@@ -7,8 +7,8 @@ class CheckHealth extends Method
 
 	public function __construct()
 	{
-		parent::__construct(function ($data) {
-			return $data;
+		parent::__construct(function () {
+			// no action
 		});
 	}
 
@@ -26,7 +26,7 @@ class CheckHealth extends Method
 	 */
 	protected function constructRequestData($data)
 	{
-		return array($data);
+		return array();
 	}
 
 	/**
@@ -35,9 +35,7 @@ class CheckHealth extends Method
 	 */
 	protected function constructResponseData($data)
 	{
-		return array(
-			'requestData' => $data,
-		);
+		return array();
 	}
 
 }
