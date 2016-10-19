@@ -17,8 +17,6 @@ class Client
 	const HEADER_SIGNATURE = 'X-Hele-Signature';
 	const HEADER_SIGNATURE_ALGORITHM = 'X-Hele-Signature-Algorithm';
 
-	const SIGNATURE_ALGORITHM = 'sha1';
-
 	/**
 	 * @var string
 	 */

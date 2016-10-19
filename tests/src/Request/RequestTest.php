@@ -18,9 +18,9 @@ class RequestTest extends PHPUnit_Framework_TestCase
 			'expectedVersion' => Client::VERSION,
 		));
 
-		$signature = hash_hmac(Client::SIGNATURE_ALGORITHM, $body, $secret);
+		$signature = hash_hmac('sha1', $body, $secret);
 
-		$request = new Request($body, $secret, $signature, Client::SIGNATURE_ALGORITHM);
+		$request = new Request($body, $secret, $signature, 'sha1');
 		$this->assertSame(array('foo'), $request->getData());
 		$this->assertSame('bar', $request->getMethod());
 	}

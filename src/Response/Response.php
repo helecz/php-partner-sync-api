@@ -7,6 +7,8 @@ use HelePartnerSyncApi\Client;
 abstract class Response
 {
 
+	const SIGNATURE_ALGORITHM = 'sha1';
+
 	/**
 	 * @var string
 	 */
@@ -28,7 +30,7 @@ abstract class Response
 			'data' => $this->getData(),
 		), JSON_PRETTY_PRINT);
 
-		$signature = hash_hmac(Client::SIGNATURE_ALGORITHM, $response, $this->secret);
+		$signature = hash_hmac(self::SIGNATURE_ALGORITHM, $response, $this->secret);
 
 		$this->send($signature, $response);
 	}
@@ -62,7 +64,7 @@ abstract class Response
 		header('HTTP/1.1 ' . $this->getHttpCode());
 		header('Content-Type: application/json');
 		header(Client::HEADER_SIGNATURE . ': ' . $signature);
-		header(Client::HEADER_SIGNATURE_ALGORITHM . ': ' . Client::SIGNATURE_ALGORITHM);
+		header(Client::HEADER_SIGNATURE_ALGORITHM . ': ' . self::SIGNATURE_ALGORITHM);
 
 		echo $response;
 	}
