@@ -10,7 +10,7 @@ abstract class Method
 {
 
 	/**
-	 * @var Closure|null
+	 * @var Closure
 	 */
 	private $callback;
 
