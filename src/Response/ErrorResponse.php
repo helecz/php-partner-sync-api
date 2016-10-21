@@ -9,6 +9,8 @@ use Throwable;
 class ErrorResponse extends Response
 {
 
+	const INTERNAL_SERVER_ERROR_MESSAGE = 'Internal server error';
+
 	/**
 	 * @var Exception|Throwable
 	 */
@@ -57,7 +59,7 @@ class ErrorResponse extends Response
 			return $this->exception->getMessage();
 		}
 
-		return 'Internal server error';
+		return self::INTERNAL_SERVER_ERROR_MESSAGE;
 	}
 
 }
