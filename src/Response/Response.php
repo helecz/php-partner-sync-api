@@ -9,6 +9,10 @@ abstract class Response
 
 	const SIGNATURE_ALGORITHM = 'sha1';
 
+	const KEY_SUCCESS = 'success';
+	const KEY_MESSAGE = 'message';
+	const KEY_DATA = 'data';
+
 	/**
 	 * @var string
 	 */
@@ -25,10 +29,10 @@ abstract class Response
 	public function render()
 	{
 		$response = json_encode(array(
-			'success' => $this->isSuccessful(),
-			'message' => $this->getMessage(),
-			'data' => $this->getData(),
-		), JSON_PRETTY_PRINT);
+			self::KEY_SUCCESS => $this->isSuccessful(),
+			self::KEY_MESSAGE => $this->getMessage(),
+			self::KEY_DATA => $this->getData(),
+		), defined('JSON_PRETTY_PRINT') ? JSON_PRETTY_PRINT : 0);
 
 		$signature = hash_hmac(self::SIGNATURE_ALGORITHM, $response, $this->secret);
 

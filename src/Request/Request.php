@@ -8,6 +8,10 @@ use HelePartnerSyncApi\Validator;
 class Request
 {
 
+	const KEY_EXPECTED_VERSION = 'expectedVersion';
+	const KEY_METHOD = 'method';
+	const KEY_DATA = 'data';
+
 	/**
 	 * @var array
 	 */
@@ -46,18 +50,18 @@ class Request
 
 		try {
 			Validator::checkStructure($data, array(
-				'expectedVersion' => Validator::TYPE_STRING,
-				'method' => Validator::TYPE_STRING,
-				'data' => Validator::TYPE_ARRAY,
+				self::KEY_EXPECTED_VERSION => Validator::TYPE_STRING,
+				self::KEY_METHOD => Validator::TYPE_STRING,
+				self::KEY_DATA => Validator::TYPE_ARRAY,
 			));
 
 		} catch (ValidationException $e) {
 			throw new RequestException('Invalid request: ' . $e->getMessage(), $e);
 		}
 
-		$this->data = $data['data'];
-		$this->method = $data['method'];
-		$this->expectedVersion = $data['expectedVersion'];
+		$this->data = $data[self::KEY_DATA];
+		$this->method = $data[self::KEY_METHOD];
+		$this->expectedVersion = $data[self::KEY_EXPECTED_VERSION];
 	}
 
 	/**
