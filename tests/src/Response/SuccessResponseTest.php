@@ -17,7 +17,7 @@ class SuccessResponseTest extends PHPUnit_Framework_TestCase
 		);
 		$response = new SuccessResponse('secret', $data);
 
-		$this->assertSame('ok', $response->getMessage());
+		$this->assertSame(SuccessResponse::OK_MESSAGE, $response->getMessage());
 		$this->assertSame($data, $response->getData());
 		$this->assertTrue($response->isSuccessful());
 	}
