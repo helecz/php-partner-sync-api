@@ -15,9 +15,9 @@ class RequestFactoryTest extends PHPUnit_Framework_TestCase
 		$arguments = array('value');
 		$method = 'fooMethod';
 		$data = array(
-			'data' => $arguments,
-			'expectedVersion' => Client::VERSION,
-			'method' => $method,
+			Request::KEY_DATA => $arguments,
+			Request::KEY_EXPECTED_VERSION => Client::VERSION,
+			Request::KEY_METHOD => $method,
 		);
 
 		$requestData = json_encode($data);

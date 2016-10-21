@@ -12,9 +12,9 @@ class RequestTest extends PHPUnit_Framework_TestCase
 		$secret = 'foo secret';
 
 		$body = json_encode(array(
-			'data' => array('foo'),
-			'method' => 'bar',
-			'expectedVersion' => '1.0',
+			Request::KEY_DATA => array('foo'),
+			Request::KEY_METHOD => 'bar',
+			Request::KEY_EXPECTED_VERSION => '1.0',
 		));
 
 		$signature = hash_hmac('sha1', $body, $secret);
