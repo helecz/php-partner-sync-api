@@ -7,7 +7,7 @@ use HelePartnerSyncApi\Validator;
 class SuccessResponse extends Response
 {
 
-	const OK_MESSAGE = 'ok';
+	const MESSAGE_OK = 'ok';
 
 	/**
 	 * @var array
@@ -55,7 +55,7 @@ class SuccessResponse extends Response
 	 */
 	public function getMessage()
 	{
-		return self::OK_MESSAGE;
+		return self::MESSAGE_OK;
 	}
 
 }
