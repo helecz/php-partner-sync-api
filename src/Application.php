@@ -7,8 +7,8 @@ use HelePartnerSyncApi\Method\CancelReservation;
 use HelePartnerSyncApi\Method\CheckHealth;
 use HelePartnerSyncApi\Method\CreateReservation;
 use HelePartnerSyncApi\Method\GetSlots;
-use HelePartnerSyncApi\Request\DefaultRequestFactory;
-use HelePartnerSyncApi\Response\DefaultResponseFactory;
+use HelePartnerSyncApi\Request\RequestFactory;
+use HelePartnerSyncApi\Response\ResponseFactory;
 
 class Application
 {
@@ -24,8 +24,8 @@ class Application
 	public function __construct($secret)
 	{
 		$this->client = new Client(
-			new DefaultRequestFactory($secret),
-			new DefaultResponseFactory($secret)
+			new RequestFactory($secret),
+			new ResponseFactory($secret)
 		);
 		$this->client->registerMethod(new CheckHealth());
 	}
