@@ -49,6 +49,9 @@ You should save new reservation to your database with the data given.
 If reservation cannot be created for some reason, you can throw any Exception and the reservation on Hele website will not be performed.
 We call this endpoint only if we know there is a free slot on that time (according to output in `onGetSlots`), so throwing exceptions should not be needed.
 
+Array provided in `$parameters` contains (beside your custom data) also following keys: `customerName`, `customerEmail`, `customerPhone`, `customerNote`.
+Values of all these keys may be null.
+
 ### `onCancelReservation`
 
 This endpoint is called when previously created reservation is cancelled.
