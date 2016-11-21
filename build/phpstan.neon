@@ -2,3 +2,4 @@ parameters:
 	ignoreErrors:
 		- '#Function apache_request_headers not found.#'
 		- '#Function HelePartnerSyncApi\\Response\\header not found.#'
+		- '#but returns PHPUnit_Framework_MockObject_MockObject#'
