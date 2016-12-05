@@ -16,7 +16,7 @@
 		"consistence/coding-standard": "^0.12.0",
 		"phing/phing": "~2.15",
 		"phpunit/phpunit": "~4.8",
-		"phpstan/phpstan": "^0.2",
+		"phpstan/phpstan": "~0.4.0",
 		"jakub-onderka/php-parallel-lint": "~0.9",
 		"phpdocumentor/reflection-docblock": "~2.0.4",
 		"satooshi/php-coveralls": "~1.0.1",

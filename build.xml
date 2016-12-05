@@ -98,6 +98,8 @@
 			<arg value="analyse"/>
 			<arg value="-c"/>
 			<arg path="${path.phpstan.config}"/>
+			<arg value="-l"/>
+			<arg value="4"/>
 			<arg path="${path.src}"/>
 			<arg path="${path.tests.src}"/>
 		</exec>
