@@ -35,12 +35,13 @@ class GetSlots extends Method
 	}
 
 	/**
-	 * @param mixed $data
+	 * @param array $requestData
+	 * @param mixed $responseData
 	 * @return array
 	 */
-	protected function constructResponseData($data)
+	protected function constructResponseData(array $requestData, $responseData)
 	{
-		Validator::checkStructure($data, array(
+		Validator::checkStructure($responseData, array(
 			array(
 				'startDateTime' => Validator::TYPE_DATE_TIME,
 				'endDateTime' => Validator::TYPE_DATE_TIME,
@@ -49,19 +50,25 @@ class GetSlots extends Method
 		));
 
 		$result = array();
+		$requestedDate = $requestData[0]->format('Y-m-d');
 
-		foreach ($data as $index => $slot) {
+		foreach ($responseData as $index => $slot) {
 			$whichSlot = sprintf('(slot #%d)', $index + 1);
 			$startDateTime = $slot['startDateTime']->format(DateTime::W3C);
 			$endDateTime = $slot['endDateTime']->format(DateTime::W3C);
+			$startDate = $slot['startDateTime']->format('Y-m-d');
 			$capacity = $slot['capacity'];
 
 			if ($startDateTime >= $endDateTime) {
 				throw new ValidationException(sprintf('Slot startDateTime (%s) must be before endDateTime (%s) %s', $startDateTime, $endDateTime, $whichSlot));
 			}
 
+			if ($requestedDate !== $startDate) {
+				throw new ValidationException(sprintf('Slot startDateTime (%s) does not match requested day (%s) %s', $startDate, $requestedDate, $whichSlot));
+			}
+
 			if ($capacity < 0) {
-				throw new ValidationException(sprintf('Slot capacity (%s) must be non-negative %s', $capacity, $whichSlot));
+				throw new ValidationException(sprintf('Slot capacity (%d) must be non-negative %s', $capacity, $whichSlot));
 			}
 
 			$result[] = array(

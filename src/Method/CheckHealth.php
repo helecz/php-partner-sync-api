@@ -30,10 +30,11 @@ class CheckHealth extends Method
 	}
 
 	/**
-	 * @param mixed $data
+	 * @param array $requestData
+	 * @param mixed $responseData
 	 * @return array
 	 */
-	protected function constructResponseData($data)
+	protected function constructResponseData(array $requestData, $responseData)
 	{
 		return array();
 	}
