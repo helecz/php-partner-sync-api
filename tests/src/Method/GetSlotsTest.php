@@ -41,6 +41,9 @@ class GetSlotsTest extends MethodTestCase
 	public function testFailures()
 	{
 		$now = new DateTime();
+		$before = new DateTime('-1 hour');
+		$tomorrow = new DateTime('tomorrow');
+		$nowString = $now->format(DateTime::W3C);
 
 		$this->checkException(
 			array(),
@@ -59,25 +62,25 @@ class GetSlotsTest extends MethodTestCase
 		);
 		$this->checkException(
 			array(
-				'date' => $now->format(DateTime::W3C),
+				'date' => $nowString,
 				'parameters' => array(),
 			),
 			array(
 				array(
-					'startDateTime' => new DateTime(),
+					'startDateTime' => $now,
 				)
 			),
 			'Missing keys (endDateTime, capacity)'
 		);
 		$this->checkException(
 			array(
-				'date' => $now->format(DateTime::W3C),
+				'date' => $nowString,
 				'parameters' => array(),
 			),
 			array(
 				array(
-					'startDateTime' => new DateTime(),
-					'endDateTime' => new DateTime(),
+					'startDateTime' => $now,
+					'endDateTime' => $now,
 					'capacity' => 'string',
 				)
 			),
@@ -85,17 +88,59 @@ class GetSlotsTest extends MethodTestCase
 		);
 		$this->checkException(
 			array(
-				'date' => $now->format(DateTime::W3C),
+				'date' => $nowString,
 				'parameters' => array(),
 			),
 			array(
 				array(
 					'startDateTime' => 'not-a-datetime',
-					'endDateTime' => new DateTime(),
+					'endDateTime' => $now,
 					'capacity' => 1,
 				)
 			),
 			'DateTime expected, string (not-a-datetime) given.'
+		);
+		$this->checkException(
+			array(
+				'date' => $nowString,
+				'parameters' => array(),
+			),
+			array(
+				array(
+					'startDateTime' => $before,
+					'endDateTime' => $now,
+					'capacity' => -1,
+				)
+			),
+			'Slot capacity (-1) must be non-negative (slot #1)'
+		);
+		$this->checkException(
+			array(
+				'date' => $nowString,
+				'parameters' => array(),
+			),
+			array(
+				array(
+					'startDateTime' => $now,
+					'endDateTime' => $before,
+					'capacity' => 1,
+				)
+			),
+			sprintf('Slot startDateTime (%s) must be before endDateTime (%s) (slot #1)', $nowString, $before->format(DateTime::W3C))
+		);
+		$this->checkException(
+			array(
+				'date' => $tomorrow->format(DateTime::W3C),
+				'parameters' => array(),
+			),
+			array(
+				array(
+					'startDateTime' => $before,
+					'endDateTime' => $now,
+					'capacity' => 1,
+				)
+			),
+			sprintf('Slot startDateTime (%s) does not match requested day (%s) (slot #1)', $now->format('Y-m-d'), $tomorrow->format('Y-m-d'))
 		);
 	}
 
@@ -112,7 +157,7 @@ class GetSlotsTest extends MethodTestCase
 				return $responseData;
 			});
 			$method->call($request);
-			$this->fail('Expected exception to be thrown');
+			$this->fail(sprintf('Expected exception with "%s" to be thrown', $error));
 
 		} catch (MethodException $e) {
 			$this->assertContains($error, $e->getMessage());

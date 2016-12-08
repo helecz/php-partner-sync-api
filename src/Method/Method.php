@@ -35,7 +35,7 @@ abstract class Method
 		}
 
 		try {
-			return $this->constructResponseData(call_user_func_array(
+			return $this->constructResponseData($requestData, call_user_func_array(
 				$this->callback,
 				$requestData
 			));
@@ -56,9 +56,10 @@ abstract class Method
 	abstract protected function constructRequestData($data);
 
 	/**
-	 * @param mixed $data
+	 * @param array $requestData Return value of constructRequestData
+	 * @param mixed $responseData
 	 * @return array
 	 */
-	abstract protected function constructResponseData($data);
+	abstract protected function constructResponseData(array $requestData, $responseData);
 
 }
