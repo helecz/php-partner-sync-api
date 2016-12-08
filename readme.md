@@ -79,3 +79,10 @@ The callback must return array of arrays in following format:
     ],
 ]
 ```
+
+## Testing implementation
+
+After receiving `secret` from us (by email), you can test if your implementation works as expected on [prepared tool](https://partner.hele.cz/sync-api).
+First check if your API is responding correctly using `checkHealth` method.
+Then try to fetch some slots and create reservation.
+After that, you should see capacity drop on that time where you created the reservation.
